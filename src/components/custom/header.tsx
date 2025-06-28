@@ -41,7 +41,7 @@ const NavLink = ({ children }: { children: React.ReactNode }) => (
 
 export const Header = () => {
   const { open, onOpen, onClose } = useDisclosure();
-  const [login, setLogin] = useState(false);
+  const [login] = useState(false);
 
   return (
     <Box
