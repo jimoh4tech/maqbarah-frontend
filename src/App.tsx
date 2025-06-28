@@ -1,10 +1,14 @@
 import { Box } from "@chakra-ui/react";
-import { ComingSoon } from "./components/custom/coming-soon";
+import { Hero } from "./components/custom/hero";
+import { Header } from "./components/custom/header";
+import { Footer } from "./components/custom/footer";
 
 function App() {
   return (
     <Box>
-      <ComingSoon />
+      <Header />
+      <Hero />
+      <Footer />
     </Box>
   );
 }
