@@ -7,7 +7,6 @@ import {
   Link,
   useDisclosure,
   Stack,
-  Text,
 } from "@chakra-ui/react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { useState } from "react";
