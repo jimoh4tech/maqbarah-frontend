@@ -16,10 +16,15 @@ export const Footer = () => {
       <Flex
         direction={{ base: "column", md: "row" }}
         justify="space-between"
+        alignItems={{ base: "center", md: "flex-start" }}
         gap={10}
       >
         {/* Branding */}
-        <Stack gap={4} maxW="250px">
+        <Stack
+          gap={4}
+          maxW="250px"
+          alignItems={{ base: "center", md: "flex-start" }}
+        >
           <HStack align="center">
             <Image src="/images/logo.png" alt="Maqbarah Logo" />
           </HStack>
@@ -40,7 +45,11 @@ export const Footer = () => {
         </Stack>
 
         {/* Quick Links */}
-        <Stack gap={2} minW="150px">
+        <Stack
+          gap={2}
+          minW="150px"
+          alignItems={{ base: "center", md: "flex-start" }}
+        >
           <Text fontWeight="semibold" mb={1}>
             Quick Links
           </Text>
@@ -59,7 +68,11 @@ export const Footer = () => {
         </Stack>
 
         {/* Resources */}
-        <Stack gap={2} minW="150px">
+        <Stack
+          gap={2}
+          minW="150px"
+          alignItems={{ base: "center", md: "flex-start" }}
+        >
           <Text fontWeight="semibold" mb={1}>
             Resources
           </Text>

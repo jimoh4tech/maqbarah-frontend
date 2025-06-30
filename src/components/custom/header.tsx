@@ -18,7 +18,7 @@ const Links = [
   "Search Maqbarah",
   "Submit Maqbarah",
   "Resources",
-  "Support",
+  "Donate",
   "Contact",
 ];
 
