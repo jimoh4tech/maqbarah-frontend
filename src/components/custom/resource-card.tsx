@@ -22,7 +22,7 @@ export const ResourceCard = ({
       p={5}
       bg="white"
       shadow="sm"
-      maxW={{ base: "sm", sm: "1/2", md: "1/3" }}
+      w={"300px"}
     >
       <Flex align="center" mb={3}>
         <Icon

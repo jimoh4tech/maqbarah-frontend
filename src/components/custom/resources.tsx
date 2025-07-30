@@ -1,8 +1,14 @@
 import { Box, Flex, For, Heading, Text } from "@chakra-ui/react";
 import { FiHelpCircle } from "react-icons/fi";
 import { ResourceCard } from "./resource-card";
+import { RefObject } from "react";
+import { toaster } from "../ui/toaster";
 
-export const ResourcesSection = () => {
+export const ResourcesSection = ({
+  resourcesRef,
+}: {
+  resourcesRef: RefObject<HTMLDivElement | null>;
+}) => {
   const resourceData = [
     {
       title: "Islamic Burial Guide",
@@ -27,6 +33,15 @@ export const ResourcesSection = () => {
     },
   ];
 
+  const showComingSoonToast = () => {
+    console.log("I was clicked");
+    toaster.create({
+      title: "Info",
+      description: "Coming Soon!",
+      type: "info",
+    });
+  };
+
   return (
     <Box
       bg="gray.100"
@@ -34,6 +49,7 @@ export const ResourcesSection = () => {
       px={{ base: 4, md: 20 }}
       borderRadius="md"
       boxShadow="md"
+      ref={resourcesRef}
     >
       <Flex direction={"column"} align="center" justify="space-between" gap={4}>
         <Heading
@@ -49,7 +65,13 @@ export const ResourcesSection = () => {
 
         <Flex gap={5} wrap="wrap" justify="center" mt={6}>
           <For each={resourceData}>
-            {(item) => <ResourceCard key={item.title} {...item} />}
+            {(item) => (
+              <ResourceCard
+                key={item.title}
+                {...item}
+                onClick={showComingSoonToast}
+              />
+            )}
           </For>
         </Flex>
       </Flex>
