@@ -1,8 +1,13 @@
 import { Box, Flex, For, Heading, Text } from "@chakra-ui/react";
 import { FiHelpCircle } from "react-icons/fi";
 import { ResourceCard } from "./resource-card";
+import { RefObject } from "react";
 
-export const ResourcesSection = () => {
+export const ResourcesSection = ({
+  resourcesRef,
+}: {
+  resourcesRef: RefObject<HTMLDivElement | null>;
+}) => {
   const resourceData = [
     {
       title: "Islamic Burial Guide",
@@ -34,6 +39,7 @@ export const ResourcesSection = () => {
       px={{ base: 4, md: 20 }}
       borderRadius="md"
       boxShadow="md"
+      ref={resourcesRef}
     >
       <Flex direction={"column"} align="center" justify="space-between" gap={4}>
         <Heading

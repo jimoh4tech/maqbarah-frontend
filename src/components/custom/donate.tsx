@@ -1,7 +1,12 @@
 import { Box, Heading, Text, VStack, Container, Icon } from "@chakra-ui/react";
+import { RefObject } from "react";
 import { FaHandHoldingHeart } from "react-icons/fa"; // Icon for donation/support
 
-export function DonateSection() {
+export function DonateSection({
+  donateRef,
+}: {
+  donateRef: RefObject<HTMLDivElement | null>;
+}) {
   return (
     <Box
       as="section"
@@ -9,6 +14,7 @@ export function DonateSection() {
       bg="forest.50" // Light forest background to stand out
       color="gray.800" // Default text color
       textAlign="center" // Center align content
+      ref={donateRef}
     >
       <Container maxW="container.md" px={{ base: "4", md: "8" }}>
         <VStack gap={{ base: "6", md: "8" }}>

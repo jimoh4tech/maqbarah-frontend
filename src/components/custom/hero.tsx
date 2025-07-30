@@ -7,11 +7,22 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { RefObject } from "react";
 import { IoSearch } from "react-icons/io5";
 
-export const Hero = () => {
+export const Hero = ({
+  heroRef,
+}: {
+  heroRef: RefObject<HTMLDivElement | null>;
+}) => {
   return (
-    <Box bg="forest.700" color="white" py={16} px={{ base: 4, md: 20 }}>
+    <Box
+      bg="forest.700"
+      color="white"
+      py={16}
+      px={{ base: 4, md: 20 }}
+      ref={heroRef}
+    >
       <Flex
         direction={{ base: "column", md: "row" }}
         align="center"

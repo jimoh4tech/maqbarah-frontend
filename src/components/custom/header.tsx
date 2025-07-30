@@ -9,7 +9,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { FiMenu, FiX } from "react-icons/fi";
-import { useState } from "react";
+import { RefObject, useState } from "react";
 import { MdOutlineDehaze } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 
@@ -22,7 +22,13 @@ const Links = [
   "Contact",
 ];
 
-const NavLink = ({ children }: { children: React.ReactNode }) => (
+const NavLink = ({
+  children,
+  ref,
+}: {
+  children: React.ReactNode;
+  ref: RefObject<HTMLDivElement | null>;
+}) => (
   <Link
     px={3}
     py={2}
@@ -31,14 +37,18 @@ const NavLink = ({ children }: { children: React.ReactNode }) => (
       textDecoration: "none",
       bg: "gray.100",
     }}
-    href={"#"}
+    onClick={() => ref.current?.scrollIntoView({ behavior: "smooth" })}
     fontWeight="medium"
   >
     {children}
   </Link>
 );
 
-export const Header = () => {
+export const Header = ({
+  refs,
+}: {
+  refs: RefObject<HTMLDivElement | null>[];
+}) => {
   const { open, onOpen, onClose } = useDisclosure();
   const [login] = useState(false);
 
@@ -60,8 +70,10 @@ export const Header = () => {
 
         {/* Desktop Nav */}
         <HStack gap={6} display={{ base: "none", md: "flex" }}>
-          {Links.map((link) => (
-            <NavLink key={link}>{link}</NavLink>
+          {Links.map((link, index) => (
+            <NavLink key={link} ref={refs[index]}>
+              {link}
+            </NavLink>
           ))}
         </HStack>
 
@@ -86,8 +98,10 @@ export const Header = () => {
       {open ? (
         <Box pb={4} display={{ md: "none" }}>
           <Stack gap={4}>
-            {Links.map((link) => (
-              <NavLink key={link}>{link}</NavLink>
+            {Links.map((link, index) => (
+              <NavLink key={link} ref={refs[index]}>
+                {link}
+              </NavLink>
             ))}
           </Stack>
         </Box>

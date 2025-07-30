@@ -1,8 +1,12 @@
 import { Box, Flex, For, Heading, Input, Text } from "@chakra-ui/react";
 import { MaqCard } from "./maq-card";
-import { useState } from "react";
+import { RefObject, useState } from "react";
 
-export const SearchSection = () => {
+export const SearchSection = ({
+  searchRef,
+}: {
+  searchRef: RefObject<HTMLDivElement | null>;
+}) => {
   const [searchText, setSearchText] = useState("");
   const maqbarahData = [
     {
@@ -56,6 +60,7 @@ export const SearchSection = () => {
       px={{ base: 4, md: 20 }}
       borderRadius="md"
       boxShadow="md"
+      ref={searchRef}
     >
       <Flex direction={"column"} align="center" justify="space-between" gap={4}>
         <Heading

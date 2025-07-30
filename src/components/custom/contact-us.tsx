@@ -11,8 +11,13 @@ import {
 } from "@chakra-ui/react";
 import { MdLocationOn, MdEmail, MdPhone } from "react-icons/md"; // Material Design Icons
 import { FaWhatsapp } from "react-icons/fa"; // Font Awesome for WhatsApp
+import { RefObject } from "react";
 
-export function ContactUsSection() {
+export function ContactUsSection({
+  contactUsRef,
+}: {
+  contactUsRef: RefObject<HTMLDivElement | null>;
+}) {
   return (
     <Box
       as="section"
@@ -20,6 +25,7 @@ export function ContactUsSection() {
       bg="white" // White background
       color="gray.800" // Default text color
       textAlign="center" // Center align content
+      ref={contactUsRef} // Reference for scrolling
     >
       <Container maxW="container.md" px={{ base: "4", md: "8" }}>
         <VStack gap={4}>

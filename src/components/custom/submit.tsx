@@ -10,10 +10,14 @@ import {
   Container,
   Field,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { RefObject, useState } from "react";
 import { toaster } from "../ui/toaster";
 
-export function DirectorySubmissionForm() {
+export function DirectorySubmissionForm({
+  submitRef,
+}: {
+  submitRef: RefObject<HTMLDivElement | null>;
+}) {
   // State to hold form data
   const [formData, setFormData] = useState({
     name: "",
@@ -126,17 +130,17 @@ export function DirectorySubmissionForm() {
       py={{ base: "10", md: "20" }}
       bg="gray.50"
       color="gray.800"
+      ref={submitRef}
     >
       <Container maxW="container.lg" px={{ base: "4", md: "8" }}>
-        <VStack gap="8" align="stretch">
+        <VStack gap="4" align="stretch">
           <Heading
-            as="h1"
-            size={{ base: "xl", md: "2xl" }}
-            mb="4"
-            textAlign="center"
-            color="gray.700"
+            as="h2"
+            size={{ base: "lg", md: "2xl" }}
+            mb={{ base: 4, md: 0 }}
+            textAlign={"center"}
           >
-            Submit Your Directory Details
+            Submit A Maqbarah Details
           </Heading>
 
           <Text
@@ -175,7 +179,7 @@ export function DirectorySubmissionForm() {
                 <Field.Label>Address</Field.Label>
                 <Input
                   type="address"
-                  name="name"
+                  name="address"
                   value={formData.address}
                   onChange={handleChange}
                   placeholder="Enter street address"
@@ -192,7 +196,7 @@ export function DirectorySubmissionForm() {
                     name="city"
                     value={formData.city}
                     onChange={handleChange}
-                    placeholder="Enter street address"
+                    placeholder="Enter city or landmark"
                   />
                 </Field.Root>
 
@@ -255,19 +259,6 @@ export function DirectorySubmissionForm() {
                   onChange={handleFileChange}
                   p="2" // Add some padding for the file input
                   height="auto" // Adjust height for file input
-                  //   sx={{
-                  //     "::file-selector-button": {
-                  //       border: "none",
-                  //       outline: "none",
-                  //       bg: "forest.100",
-                  //       color: "forest.700",
-                  //       borderRadius: "md",
-                  //       px: "4",
-                  //       py: "2",
-                  //       mr: "3",
-                  //       cursor: "pointer",
-                  //     },
-                  //   }}
                 />
                 {formData.picture && (
                   <Text mt="2" fontSize="sm" color="gray.600">
@@ -293,16 +284,11 @@ export function DirectorySubmissionForm() {
               {/* Submit Button */}
               <Button
                 type="submit"
-                size="lg"
-                colorScheme="forest"
-                width="full"
-                py="7"
-                borderRadius="lg"
-                fontWeight="bold"
-                shadow="md"
-                _hover={{ bg: "forest.700", shadow: "lg" }}
+                colorPalette="forest"
                 transition="all 0.2s"
                 mt="6" // Margin top for separation
+                w={"full"}
+                color={"white"}
               >
                 Submit Details
               </Button>
