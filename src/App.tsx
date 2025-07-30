@@ -34,7 +34,6 @@ function App() {
       <ResourcesSection resourcesRef={resourcesRef} />
       <DonateSection donateRef={donateRef} />
       <ContactUsSection contactUsRef={contactUsRef} />
-      {/* Ensure the Footer is included at the end of the page */}
       <Footer />
     </Box>
   );

@@ -11,7 +11,6 @@ import {
 import { FiMenu, FiX } from "react-icons/fi";
 import { RefObject, useState } from "react";
 import { MdOutlineDehaze } from "react-icons/md";
-import { FaUser } from "react-icons/fa";
 
 const Links = [
   "Home",
@@ -89,7 +88,7 @@ export const Header = ({
             {open ? <FiX /> : <FiMenu />}
           </IconButton>
           <IconButton size="md" variant="ghost" aria-label="Toggle Color Mode">
-            {login ? <MdOutlineDehaze /> : <FaUser />}
+            {login ? <MdOutlineDehaze /> : null}
           </IconButton>
         </Flex>
       </Flex>
