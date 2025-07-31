@@ -35,12 +35,12 @@ export function DirectorySubmissionForm({
     alternativePhone: "",
     picture: null as File | null, // To store the selected file
     additionalNotes: "",
-    type: "",
+    typeOfOwnership: "",
     managingBody: "",
     openingHours: "",
-    emergencyAccessAvailable: false,
+    emergencyAvailable: "",
     deceasedGroup: [""],
-    paymentType: "",
+    paymentType: [""],
     paymentDetails: "",
     paymentMethod: [""],
     availableServices: [""],
@@ -183,14 +183,14 @@ export function DirectorySubmissionForm({
         picture: null,
         additionalNotes: "",
         alternativePhone: "",
-        type: "",
+        typeOfOwnership: "",
         managingBody: "",
         openingHours: "",
         availableServices: [""],
         facilitiesAvailable: [""],
-        emergencyAccessAvailable: false,
+        emergencyAvailable: "",
         deceasedGroup: [""],
-        paymentType: "",
+        paymentType: [""],
         paymentDetails: "",
         paymentMethod: [""],
         contactPersonRole: "",
@@ -325,7 +325,7 @@ export function DirectorySubmissionForm({
               <Field.Root id="landmark" required>
                 <Field.Label>Nearby Landmark(s)</Field.Label>
                 <Input
-                  type="landmark"
+                  type="text"
                   name="landmark"
                   value={formData.landmark}
                   onChange={handleChange}
@@ -358,6 +358,16 @@ export function DirectorySubmissionForm({
                   placeholder="e.g., +2348012345678"
                 />
               </Field.Root>
+              <Field.Root id="alternativePhone" required>
+                <Field.Label>Alternative Phone Number</Field.Label>
+                <Input
+                  type="text"
+                  name="alternativePhone"
+                  value={formData.alternativePhone}
+                  onChange={handleChange}
+                  placeholder="e.g., +2348012345678"
+                />
+              </Field.Root>
               {/* Contact Person Phone Number */}
               <Field.Root id="contactPersonRole" required>
                 <Field.Label>Contact Person Role</Field.Label>
@@ -372,12 +382,17 @@ export function DirectorySubmissionForm({
               <Text fontWeight={"bold"} color="gray.500">
                 Section 3: Management & Ownership
               </Text>
-              <Field.Root id="type" required>
+              <Field.Root id="typeOfOwnership" required>
                 <Select.Root
-                  multiple
                   collection={typeOfOwnership}
                   size="sm"
-                  name="type"
+                  name="typeOfOwnership"
+                  onValueChange={(e) => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      typeOfOwnership: e.value as unknown as string,
+                    }));
+                  }}
                 >
                   <Select.HiddenSelect />
                   <Select.Label>Type of Ownership</Select.Label>
@@ -427,17 +442,23 @@ export function DirectorySubmissionForm({
                   placeholder="7:00AM - 5:30PM"
                 />
               </Field.Root>
-              <Field.Root id="type" required>
+              <Field.Root id="emergencyAvailable" required>
                 <Select.Root
                   collection={emergencyAvailable}
                   size="sm"
-                  name="type"
+                  name="emergencyAvailable"
+                  onValueChange={(e) => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      emergencyAvailable: e.value as unknown as string,
+                    }));
+                  }}
                 >
                   <Select.HiddenSelect />
                   <Select.Label>Emergency Available</Select.Label>
                   <Select.Control>
                     <Select.Trigger>
-                      <Select.ValueText placeholder="Select type" />
+                      <Select.ValueText placeholder="Select Availability" />
                     </Select.Trigger>
                     <Select.IndicatorGroup>
                       <Select.Indicator />
@@ -457,18 +478,24 @@ export function DirectorySubmissionForm({
                   </Portal>
                 </Select.Root>
               </Field.Root>
-              <Field.Root id="type" required>
+              <Field.Root id="deceasedGroup" required>
                 <Select.Root
                   multiple
                   collection={deceasedGroup}
                   size="sm"
-                  name="type"
+                  name="deceasedGroup"
+                  onValueChange={(e) => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      deceasedGroup: [e.value as unknown as string],
+                    }));
+                  }}
                 >
                   <Select.HiddenSelect />
                   <Select.Label>Who Can Be Burried?</Select.Label>
                   <Select.Control>
                     <Select.Trigger>
-                      <Select.ValueText placeholder="Select type" />
+                      <Select.ValueText placeholder="Select Deceased" />
                     </Select.Trigger>
                     <Select.IndicatorGroup>
                       <Select.Indicator />
@@ -491,18 +518,24 @@ export function DirectorySubmissionForm({
               <Text fontWeight={"bold"} color="gray.500">
                 Section 5: Fees / Payment
               </Text>
-              <Field.Root id="type" required>
+              <Field.Root id="paymentType" required>
                 <Select.Root
-                  multiple
                   collection={paymentType}
                   size="sm"
-                  name="type"
+                  name="paymentType"
+                  multiple
+                  onValueChange={(e) => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      paymentType: [e.value as unknown as string],
+                    }));
+                  }}
                 >
                   <Select.HiddenSelect />
                   <Select.Label>Is Burial Free or Paid?</Select.Label>
                   <Select.Control>
                     <Select.Trigger>
-                      <Select.ValueText placeholder="Select type" />
+                      <Select.ValueText placeholder="Select Payment Type" />
                     </Select.Trigger>
                     <Select.IndicatorGroup>
                       <Select.Indicator />
@@ -523,11 +556,11 @@ export function DirectorySubmissionForm({
                 </Select.Root>
               </Field.Root>
 
-              <Field.Root id="additionalNotes">
+              <Field.Root id="paymentDetails">
                 <Field.Label>If Paid, State Charges</Field.Label>
                 <Textarea
-                  name="additionalNotes"
-                  value={formData.additionalNotes}
+                  name="paymentDetails"
+                  value={formData.paymentDetails}
                   onChange={handleChange}
                   placeholder="Enter charges breakdown including grave digging, ghusl, etc."
                   size="lg"
@@ -535,18 +568,24 @@ export function DirectorySubmissionForm({
                   resize="vertical"
                 />
               </Field.Root>
-              <Field.Root id="type" required>
+              <Field.Root id="paymentMethod" required>
                 <Select.Root
                   multiple
                   collection={paymentMethod}
                   size="sm"
-                  name="type"
+                  name="paymentMethod"
+                  onValueChange={(e) => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      paymentMethod: [e.value as unknown as string],
+                    }));
+                  }}
                 >
                   <Select.HiddenSelect />
                   <Select.Label>Payment Method Accepted</Select.Label>
                   <Select.Control>
                     <Select.Trigger>
-                      <Select.ValueText placeholder="Select type" />
+                      <Select.ValueText placeholder="Select Payment Method" />
                     </Select.Trigger>
                     <Select.IndicatorGroup>
                       <Select.Indicator />
@@ -569,18 +608,24 @@ export function DirectorySubmissionForm({
               <Text fontWeight={"bold"} color="gray.500">
                 Section 6: Services & Facilities
               </Text>
-              <Field.Root id="type" required>
+              <Field.Root id="availableServices" required>
                 <Select.Root
                   multiple
                   collection={availableServices}
                   size="sm"
-                  name="type"
+                  name="availableServices"
+                  onValueChange={(e) => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      availableServices: [e.value as unknown as string],
+                    }));
+                  }}
                 >
                   <Select.HiddenSelect />
                   <Select.Label>Available Services</Select.Label>
                   <Select.Control>
                     <Select.Trigger>
-                      <Select.ValueText placeholder="Select type" />
+                      <Select.ValueText placeholder="Select Available Services" />
                     </Select.Trigger>
                     <Select.IndicatorGroup>
                       <Select.Indicator />
@@ -600,18 +645,24 @@ export function DirectorySubmissionForm({
                   </Portal>
                 </Select.Root>
               </Field.Root>
-              <Field.Root id="type" required>
+              <Field.Root id="facilitiesAvailable" required>
                 <Select.Root
                   multiple
                   collection={facilitiesAvailable}
                   size="sm"
-                  name="type"
+                  name="facilitiesAvailable"
+                  onValueChange={(e) => {
+                    setFormData((prevData) => ({
+                      ...prevData,
+                      facilitiesAvailable: [e.value as unknown as string],
+                    }));
+                  }}
                 >
                   <Select.HiddenSelect />
                   <Select.Label>Facilities Available</Select.Label>
                   <Select.Control>
                     <Select.Trigger>
-                      <Select.ValueText placeholder="Select type" />
+                      <Select.ValueText placeholder="Select Available Facilities" />
                     </Select.Trigger>
                     <Select.IndicatorGroup>
                       <Select.Indicator />
@@ -669,14 +720,14 @@ export function DirectorySubmissionForm({
                 Section 8: This form was filled by
               </Text>
               {/* Name */}
-              <Field.Root id="name" required>
+              <Field.Root id="fullName" required>
                 <Field.Label>Full Name</Field.Label>
                 <Input
                   type="text"
-                  name="name"
-                  value={formData.name}
+                  name="fullName"
+                  value={formData.fullName}
                   onChange={handleChange}
-                  placeholder="Enter your name"
+                  placeholder="Enter your full Name"
                 />
               </Field.Root>
 
@@ -686,7 +737,7 @@ export function DirectorySubmissionForm({
                 <Input
                   type="tel"
                   name="phoneNumber"
-                  value={formData.address}
+                  value={formData.phoneNumber}
                   onChange={handleChange}
                   placeholder="Enter your phone number"
                 />
