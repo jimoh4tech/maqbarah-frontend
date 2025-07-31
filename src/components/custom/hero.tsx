@@ -70,7 +70,7 @@ export const Hero = ({
                 submitRef.current?.scrollIntoView({ behavior: "smooth" })
               }
             >
-              Submit New Location
+              Submit New Maqbarah
             </Button>
           </Stack>
         </Box>
