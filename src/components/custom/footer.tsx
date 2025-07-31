@@ -1,16 +1,11 @@
-import {
-  Box,
-  Flex,
-  Stack,
-  Text,
-  Link,
-  Icon,
-  Image,
-  HStack,
-} from "@chakra-ui/react";
-import { FaWhatsapp, FaGlobe, FaTwitter } from "react-icons/fa";
+import { Box, Flex, Stack, Text, Link, Image, HStack } from "@chakra-ui/react";
+import { RefObject } from "react";
 
-export const Footer = () => {
+export const Footer = ({
+  refs,
+}: {
+  refs: RefObject<HTMLDivElement | null>[];
+}) => {
   return (
     <Box bg="forest.700" color="white" px={{ base: 6, md: 20 }} py={10} mt={20}>
       <Flex
@@ -29,19 +24,12 @@ export const Footer = () => {
             <Image src="/images/logo.png" alt="Maqbarah Logo" />
           </HStack>
           <Text fontSize="sm" color="green.100">
-            Connecting Muslims with verified burial grounds across Nigeria.
+            Connecting Muslims to verified burial grounds (Maqaabir) across
+            Nigeria.
           </Text>
-          <HStack gap={4} mt={2}>
-            <Link href="#" color={"white"}>
-              <Icon as={FaWhatsapp} boxSize={4} />
-            </Link>
-            <Link href="#" color={"white"}>
-              <Icon as={FaGlobe} boxSize={4} />
-            </Link>
-            <Link href="#" color={"white"}>
-              <Icon as={FaTwitter} boxSize={4} />
-            </Link>
-          </HStack>
+          <Text fontSize="sm" color="green.100">
+            &copy; Maqbarah Directory, {` ${new Date().getFullYear()}`}
+          </Text>
         </Stack>
 
         {/* Quick Links */}
@@ -53,16 +41,36 @@ export const Footer = () => {
           <Text fontWeight="semibold" mb={1}>
             Quick Links
           </Text>
-          <Link href="#" color={"white"}>
+          <Link
+            onClick={() =>
+              refs[1].current?.scrollIntoView({ behavior: "smooth" })
+            }
+            color={"white"}
+          >
             Search Maqbarah
           </Link>
-          <Link href="#" color={"white"}>
+          <Link
+            onClick={() =>
+              refs[2].current?.scrollIntoView({ behavior: "smooth" })
+            }
+            color={"white"}
+          >
             Submit Location
           </Link>
-          <Link href="#" color={"white"}>
+          <Link
+            onClick={() =>
+              refs[3].current?.scrollIntoView({ behavior: "smooth" })
+            }
+            color={"white"}
+          >
             Resources
           </Link>
-          <Link href="#" color={"white"}>
+          <Link
+            onClick={() =>
+              refs[5].current?.scrollIntoView({ behavior: "smooth" })
+            }
+            color={"white"}
+          >
             Contact Us
           </Link>
         </Stack>
