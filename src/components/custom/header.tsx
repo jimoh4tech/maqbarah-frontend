@@ -24,24 +24,34 @@ const Links = [
 const NavLink = ({
   children,
   ref,
+  handleToggle,
+  isMobile,
 }: {
   children: React.ReactNode;
   ref: RefObject<HTMLDivElement | null>;
-}) => (
-  <Link
-    px={3}
-    py={2}
-    rounded={"md"}
-    _hover={{
-      textDecoration: "none",
-      bg: "gray.100",
-    }}
-    onClick={() => ref.current?.scrollIntoView({ behavior: "smooth" })}
-    fontWeight="medium"
-  >
-    {children}
-  </Link>
-);
+  handleToggle: () => void;
+  isMobile?: boolean;
+}) => {
+  const handleClick = () => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+    if (isMobile) handleToggle();
+  };
+  return (
+    <Link
+      px={3}
+      py={2}
+      rounded={"md"}
+      _hover={{
+        textDecoration: "none",
+        bg: "gray.100",
+      }}
+      onClick={handleClick}
+      fontWeight="medium"
+    >
+      {children}
+    </Link>
+  );
+};
 
 export const Header = ({
   refs,
@@ -50,6 +60,13 @@ export const Header = ({
 }) => {
   const { open, onOpen, onClose } = useDisclosure();
   const [login] = useState(false);
+  const handleToggle = () => {
+    if (open) {
+      onClose();
+    } else {
+      onOpen();
+    }
+  };
 
   return (
     <Box
@@ -70,7 +87,7 @@ export const Header = ({
         {/* Desktop Nav */}
         <HStack gap={6} display={{ base: "none", md: "flex" }}>
           {Links.map((link, index) => (
-            <NavLink key={link} ref={refs[index]}>
+            <NavLink key={link} ref={refs[index]} handleToggle={handleToggle}>
               {link}
             </NavLink>
           ))}
@@ -98,7 +115,12 @@ export const Header = ({
         <Box pb={4} display={{ md: "none" }}>
           <Stack gap={4}>
             {Links.map((link, index) => (
-              <NavLink key={link} ref={refs[index]}>
+              <NavLink
+                key={link}
+                ref={refs[index]}
+                handleToggle={handleToggle}
+                isMobile
+              >
                 {link}
               </NavLink>
             ))}

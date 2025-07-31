@@ -34,7 +34,7 @@ function App() {
       <ResourcesSection resourcesRef={resourcesRef} />
       <DonateSection donateRef={donateRef} />
       <ContactUsSection contactUsRef={contactUsRef} />
-      <Footer />
+      <Footer refs={refs} />
     </Box>
   );
 }

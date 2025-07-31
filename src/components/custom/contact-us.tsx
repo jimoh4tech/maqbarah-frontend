@@ -62,9 +62,9 @@ export function ContactUsSection({
                 <Text fontSize="md" color="gray.700">
                   Idris Adisa Central Mosque
                 </Text>
-                <Text fontSize="md" color="gray.700">
-                  2, Mazi Street Oke-Agbo, Shibiri Ekunpa, Oto-Awori LCDA, Ojo
-                  LGA, Lagos State, Nigeria.
+                <Text fontSize="md" color="gray.700" textAlign={"left"}>
+                  C/o: 2, Mazi Street, Oke-Agbo, Shibiri Ekunpa, Oto-Awori LCDA,
+                  Ojo LGA, Lagos State, Nigeria.
                 </Text>
               </VStack>
             </HStack>
