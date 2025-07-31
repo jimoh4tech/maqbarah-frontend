@@ -9,6 +9,9 @@ import {
   SimpleGrid,
   Container,
   Field,
+  createListCollection,
+  Select,
+  Portal,
 } from "@chakra-ui/react";
 import React, { RefObject, useState } from "react";
 import { toaster } from "../ui/toaster";
@@ -25,12 +28,39 @@ export function DirectorySubmissionForm({
     city: "",
     lga: "",
     state: "",
+    landmark: "",
     contactPersonName: "",
+    contactPersonRole: "",
     contactPersonPhone: "",
+    alternativePhone: "",
     picture: null as File | null, // To store the selected file
     additionalNotes: "",
+    type: "",
+    managingBody: "",
+    openingHours: "",
+    emergencyAccessAvailable: false,
+    deceasedGroup: [""],
+    paymentType: "",
+    paymentDetails: "",
+    paymentMethod: [""],
+    availableServices: [""],
+    facilitiesAvailable: [""],
   });
-
+  const typeOfOwnership = createListCollection({
+    items: [
+      { label: "Public", value: "Public" },
+      { label: "Private", value: "Private" },
+      { label: "Community Managed", value: "Community Managed" },
+      { label: "Mosque Affliated", value: "Mosque Affliated" },
+      { label: "Society Affliated", value: "Society Affliated" },
+    ],
+  });
+  const emergencyAvailable = createListCollection({
+    items: [
+      { label: "Yes", value: "Yes" },
+      { label: "No", value: "No" },
+    ],
+  });
   // Handle input changes
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -60,6 +90,8 @@ export function DirectorySubmissionForm({
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID || "";
+    // const APIkey = import.meta.env.VITE_EMAILJS_API_KEY || "";
 
     // In a real application, you would send this formData to your backend API.
     // Example of how you might prepare data for submission (e.g., using FormData for files)
@@ -83,7 +115,7 @@ export function DirectorySubmissionForm({
       //   method: 'POST',
       //   body: dataToSend, // Use dataToSend for FormData
       // });
-
+      // await send(serviceID, "contact_me", dataToSend, APIkey);
       // if (response.ok) {
       toaster.create({
         title: "Submission Successful!",
@@ -99,10 +131,23 @@ export function DirectorySubmissionForm({
         city: "",
         lga: "",
         state: "",
+        landmark: "",
         contactPersonName: "",
         contactPersonPhone: "",
         picture: null,
         additionalNotes: "",
+        alternativePhone: "",
+        type: "",
+        managingBody: "",
+        openingHours: "",
+        availableServices: [""],
+        facilitiesAvailable: [""],
+        emergencyAccessAvailable: false,
+        deceasedGroup: [""],
+        paymentType: "",
+        paymentDetails: "",
+        paymentMethod: [""],
+        contactPersonRole: "",
       });
       // Clear file input manually if needed (for uncontrolled inputs)
       const fileInput = document.getElementById("picture") as HTMLInputElement;
@@ -162,6 +207,9 @@ export function DirectorySubmissionForm({
             shadow="xl"
           >
             <VStack gap="5">
+              <Text fontWeight={"bold"} color="gray.500">
+                Section 1: Basic Information
+              </Text>
               {/* Name */}
               <Field.Root id="name" required>
                 <Field.Label>Name</Field.Label>
@@ -182,7 +230,7 @@ export function DirectorySubmissionForm({
                   name="address"
                   value={formData.address}
                   onChange={handleChange}
-                  placeholder="Enter street address"
+                  placeholder="Enter street address and area"
                 />
               </Field.Root>
 
@@ -196,7 +244,7 @@ export function DirectorySubmissionForm({
                     name="city"
                     value={formData.city}
                     onChange={handleChange}
-                    placeholder="Enter city or landmark"
+                    placeholder="Enter city or town"
                   />
                 </Field.Root>
 
@@ -224,7 +272,20 @@ export function DirectorySubmissionForm({
                   />
                 </Field.Root>
               </SimpleGrid>
-
+              {/* Address */}
+              <Field.Root id="landmark" required>
+                <Field.Label>Nearby Landmark(s)</Field.Label>
+                <Input
+                  type="landmark"
+                  name="landmark"
+                  value={formData.landmark}
+                  onChange={handleChange}
+                  placeholder="Enter landmark"
+                />
+              </Field.Root>
+              <Text fontWeight={"bold"} color="gray.500">
+                Section 2: Contact Information
+              </Text>
               {/* Contact Person Name */}
               <Field.Root id="contactPersonName" required>
                 <Field.Label>Contact Person Name</Field.Label>
@@ -248,7 +309,86 @@ export function DirectorySubmissionForm({
                   placeholder="e.g., +2348012345678"
                 />
               </Field.Root>
-
+              {/* Contact Person Phone Number */}
+              <Field.Root id="contactPersonRole" required>
+                <Field.Label>Contact Person Role</Field.Label>
+                <Input
+                  type="text"
+                  name="contactPersonRole"
+                  value={formData.contactPersonRole}
+                  onChange={handleChange}
+                  placeholder="Caretaker, Manager, etc."
+                />
+              </Field.Root>
+              <Text fontWeight={"bold"} color="gray.500">
+                Section 3: Management & Ownership
+              </Text>
+              <Field.Root id="type" required>
+                <Select.Root collection={typeOfOwnership} size="sm" name="type">
+                  <Select.HiddenSelect />
+                  <Select.Label>Type of Ownership</Select.Label>
+                  <Select.Control>
+                    <Select.Trigger>
+                      <Select.ValueText placeholder="Select type" />
+                    </Select.Trigger>
+                    <Select.IndicatorGroup>
+                      <Select.Indicator />
+                    </Select.IndicatorGroup>
+                  </Select.Control>
+                  <Portal>
+                    <Select.Positioner>
+                      <Select.Content>
+                        {typeOfOwnership.items.map((framework) => (
+                          <Select.Item item={framework} key={framework.value}>
+                            {framework.label}
+                            <Select.ItemIndicator />
+                          </Select.Item>
+                        ))}
+                      </Select.Content>
+                    </Select.Positioner>
+                  </Portal>
+                </Select.Root>
+              </Field.Root>
+              <Field.Root id="openingHours" required>
+                <Field.Label>Opening & Closing Times</Field.Label>
+                <Input
+                  type="text"
+                  name="openingHours"
+                  value={formData.openingHours}
+                  onChange={handleChange}
+                  placeholder="7:00AM - 5:30PM"
+                />
+              </Field.Root>
+              <Field.Root id="type" required>
+                <Select.Root
+                  collection={emergencyAvailable}
+                  size="sm"
+                  name="type"
+                >
+                  <Select.HiddenSelect />
+                  <Select.Label>Emergency Available</Select.Label>
+                  <Select.Control>
+                    <Select.Trigger>
+                      <Select.ValueText placeholder="Select type" />
+                    </Select.Trigger>
+                    <Select.IndicatorGroup>
+                      <Select.Indicator />
+                    </Select.IndicatorGroup>
+                  </Select.Control>
+                  <Portal>
+                    <Select.Positioner>
+                      <Select.Content>
+                        {emergencyAvailable.items.map((framework) => (
+                          <Select.Item item={framework} key={framework.value}>
+                            {framework.label}
+                            <Select.ItemIndicator />
+                          </Select.Item>
+                        ))}
+                      </Select.Content>
+                    </Select.Positioner>
+                  </Portal>
+                </Select.Root>
+              </Field.Root>
               {/* Picture Upload */}
               <Field.Root id="picture">
                 <Field.Label>Upload Picture</Field.Label>

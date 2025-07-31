@@ -28,7 +28,7 @@ function App() {
   return (
     <Box>
       <Header refs={refs} />
-      <Hero heroRef={heroRef} />
+      <Hero heroRef={heroRef} submitRef={submitRef} searchRef={searchRef} />
       <SearchSection searchRef={searchRef} />
       <DirectorySubmissionForm submitRef={submitRef} />
       <ResourcesSection resourcesRef={resourcesRef} />

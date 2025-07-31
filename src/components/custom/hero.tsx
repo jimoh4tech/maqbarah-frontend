@@ -12,8 +12,12 @@ import { IoSearch } from "react-icons/io5";
 
 export const Hero = ({
   heroRef,
+  searchRef,
+  submitRef,
 }: {
   heroRef: RefObject<HTMLDivElement | null>;
+  searchRef: RefObject<HTMLDivElement | null>;
+  submitRef: RefObject<HTMLDivElement | null>;
 }) => {
   return (
     <Box
@@ -47,11 +51,25 @@ export const Hero = ({
           </Text>
 
           <Stack direction={{ base: "column", sm: "row" }} gap={4} mt={8}>
-            <Button colorPalette="forest" variant="subtle" bgColor={"white"}>
+            <Button
+              colorPalette="forest"
+              variant="subtle"
+              bgColor={"white"}
+              onClick={() =>
+                searchRef.current?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
               <IoSearch />
               Search Maqbarah
             </Button>
-            <Button colorPalette={"forest"} variant={"outline"} color={"white"}>
+            <Button
+              colorPalette={"forest"}
+              variant={"outline"}
+              color={"white"}
+              onClick={() =>
+                submitRef.current?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
               Submit New Location
             </Button>
           </Stack>
