@@ -80,8 +80,8 @@ export const Header = ({
     >
       <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
         {/* Logo Section */}
-        <HStack gap={4}>
-          <Image src="/images/logo.png" alt="Maqbarah Directory" />
+        <HStack gap={4} w={'150px'}>
+          <Image src="/images/logo_dark.png" alt="Maqbarah Directory" />
         </HStack>
 
         {/* Desktop Nav */}

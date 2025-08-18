@@ -7,7 +7,7 @@ export const Footer = ({
   refs: RefObject<HTMLDivElement | null>[];
 }) => {
   return (
-    <Box bg="forest.700" color="white" px={{ base: 6, md: 20 }} py={10} mt={20}>
+    <Box bg="forest.700" color="white" px={{ base: 6, md: 20 }} pt={10} mt={20}>
       <Flex
         direction={{ base: "column", md: "row" }}
         justify="space-between"
@@ -20,16 +20,16 @@ export const Footer = ({
           maxW="250px"
           alignItems={{ base: "center", md: "flex-start" }}
         >
-          <HStack align="center">
-            <Image src="/images/logo.png" alt="Maqbarah Logo" />
+          <HStack align="center" w={"150px"}>
+            <Image src="/images/logo_light.png" alt="Maqbarah Logo" />
           </HStack>
           <Text fontSize="sm" color="green.100">
-            Connecting Muslims to verified burial grounds (Maqaabir) across
+            Connecting Muslims to <b>Verified Maqbarah</b> (Cementary) Across
             Nigeria.
           </Text>
-          <Text fontSize="sm" color="green.100">
+          {/* <Text fontSize="sm" color="green.100">
             &copy; Maqbarah Directory, {` ${new Date().getFullYear()}`}
-          </Text>
+          </Text> */}
         </Stack>
 
         {/* Quick Links */}
@@ -98,6 +98,9 @@ export const Footer = ({
           </Link>
         </Stack>
       </Flex>
+      <Text fontSize="sm" color="green.100" textAlign={"center"} mt={16} pb={2}>
+        &copy; Maqbarah Directory, {` ${new Date().getFullYear()}`}
+      </Text>
     </Box>
   );
 };

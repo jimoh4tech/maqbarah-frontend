@@ -35,6 +35,7 @@ export function DirectorySubmissionForm({
     alternativePhone: "",
     picture: null as File | null, // To store the selected file
     additionalNotes: "",
+    paymentDescription: "",
     type: "",
     managingBody: "",
     openingHours: "",
@@ -182,6 +183,7 @@ export function DirectorySubmissionForm({
         contactPersonPhone: "",
         picture: null,
         additionalNotes: "",
+        paymentDescription: '',
         alternativePhone: "",
         type: "",
         managingBody: "",
@@ -523,11 +525,11 @@ export function DirectorySubmissionForm({
                 </Select.Root>
               </Field.Root>
 
-              <Field.Root id="additionalNotes">
+              <Field.Root id="paymentDescription">
                 <Field.Label>If Paid, State Charges</Field.Label>
                 <Textarea
-                  name="additionalNotes"
-                  value={formData.additionalNotes}
+                  name="paymentDescription"
+                  value={formData.paymentDescription}
                   onChange={handleChange}
                   placeholder="Enter charges breakdown including grave digging, ghusl, etc."
                   size="lg"
@@ -669,14 +671,14 @@ export function DirectorySubmissionForm({
                 Section 8: This form was filled by
               </Text>
               {/* Name */}
-              <Field.Root id="name" required>
+              <Field.Root id="fullName" required>
                 <Field.Label>Full Name</Field.Label>
                 <Input
                   type="text"
-                  name="name"
-                  value={formData.name}
+                  name="fullName"
+                  value={formData.fullName}
                   onChange={handleChange}
-                  placeholder="Enter your name"
+                  placeholder="Enter your fullname"
                 />
               </Field.Root>
 
@@ -698,7 +700,7 @@ export function DirectorySubmissionForm({
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="Enter your email"
+                  placeholder="Enter your email address"
                 />
               </Field.Root>
               {/* Submit Button */}

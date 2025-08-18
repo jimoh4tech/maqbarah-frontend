@@ -12,6 +12,7 @@ import {
 import { MdLocationOn, MdEmail, MdPhone } from "react-icons/md"; // Material Design Icons
 import { FaWhatsapp } from "react-icons/fa"; // Font Awesome for WhatsApp
 import { RefObject } from "react";
+import { FaFacebook, FaTelegram } from "react-icons/fa6";
 
 export function ContactUsSection({
   contactUsRef,
@@ -60,11 +61,11 @@ export function ContactUsSection({
                   Office Address
                 </Text>
                 <Text fontSize="md" color="gray.700">
-                  Idris Adisa Central Mosque
+                  C/o: Idris Adisa Central Mosque
                 </Text>
                 <Text fontSize="md" color="gray.700" textAlign={"left"}>
-                  C/o: 2, Mazi Street, Oke-Agbo, Shibiri Ekunpa, Oto-Awori LCDA,
-                  Ojo LGA, Lagos State, Nigeria.
+                  2, Mazi Street, Oke-Agbo, Shibiri Ekunpa, Oto-Awori LCDA, Ojo
+                  LGA, Lagos State, Nigeria.
                 </Text>
               </VStack>
             </HStack>
@@ -168,8 +169,63 @@ export function ContactUsSection({
                   fontSize="md"
                   color="forest.600"
                   _hover={{ textDecoration: "underline" }}
+                  target="_blank"
                 >
                   Chat on WhatsApp
+                </Link>
+              </VStack>
+            </HStack>
+            {/* Telegram */}
+            <HStack
+              gap="4"
+              align="flex-start"
+              p="3"
+              bg="gray.50"
+              borderRadius="md"
+              shadow="sm"
+              w={"350px"}
+              h={"150px"}
+            >
+              <Icon as={FaTelegram} w={6} h={6} color="forest.500" />
+              <VStack align="flex-start" gap="0">
+                <Text fontWeight="semibold" fontSize="lg">
+                  Telegram
+                </Text>
+                <Link
+                  href="https://t.me/maqbarahdirectory"
+                  fontSize="md"
+                  color="forest.600"
+                  _hover={{ textDecoration: "underline" }}
+                  target="_blank"
+                >
+                  Join Telegram Group
+                </Link>
+              </VStack>
+            </HStack>
+            {/* Facebook */}
+            <HStack
+              gap="4"
+              align="flex-start"
+              p="3"
+              bg="gray.50"
+              borderRadius="md"
+              shadow="sm"
+              w={"350px"}
+              h={"150px"}
+            >
+              <Icon as={FaFacebook} w={6} h={6} color="forest.500" />
+              <VStack align="flex-start" gap="0">
+                <Text fontWeight="semibold" fontSize="lg">
+                  Facebook
+                </Text>
+                <Link
+                  href="https://www.facebook.com/profile.php?id=61575141770717&mibextid=ZbWKwL"
+                  fontSize="md"
+                  color="forest.600"
+                  _hover={{ textDecoration: "underline" }}
+                  target="_blank"
+                >
+                  Visit Our Facebook Page
                 </Link>
               </VStack>
             </HStack>
