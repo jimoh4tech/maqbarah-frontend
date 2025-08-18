@@ -41,7 +41,8 @@ export function DirectorySubmissionForm({
     openingHours: "",
     emergencyAccessAvailable: false,
     deceasedGroup: [""],
-    paymentType: "",
+    typeOfOwnership: [""],
+    paymentType: [""],
     paymentDetails: "",
     paymentMethod: [""],
     availableServices: [""],
@@ -183,7 +184,7 @@ export function DirectorySubmissionForm({
         contactPersonPhone: "",
         picture: null,
         additionalNotes: "",
-        paymentDescription: '',
+        paymentDescription: "",
         alternativePhone: "",
         type: "",
         managingBody: "",
@@ -192,7 +193,8 @@ export function DirectorySubmissionForm({
         facilitiesAvailable: [""],
         emergencyAccessAvailable: false,
         deceasedGroup: [""],
-        paymentType: "",
+        typeOfOwnership: [""],
+        paymentType: [""],
         paymentDetails: "",
         paymentMethod: [""],
         contactPersonRole: "",
@@ -374,12 +376,12 @@ export function DirectorySubmissionForm({
               <Text fontWeight={"bold"} color="gray.500">
                 Section 3: Management & Ownership
               </Text>
-              <Field.Root id="type" required>
+              <Field.Root id="typeOfOwnership" required>
                 <Select.Root
                   multiple
                   collection={typeOfOwnership}
                   size="sm"
-                  name="type"
+                  name="typeOfOwnership"
                 >
                   <Select.HiddenSelect />
                   <Select.Label>Type of Ownership</Select.Label>
@@ -459,12 +461,12 @@ export function DirectorySubmissionForm({
                   </Portal>
                 </Select.Root>
               </Field.Root>
-              <Field.Root id="type" required>
+              <Field.Root id="deceasedGroup" required>
                 <Select.Root
                   multiple
                   collection={deceasedGroup}
                   size="sm"
-                  name="type"
+                  name="deceasedGroup"
                 >
                   <Select.HiddenSelect />
                   <Select.Label>Who Can Be Burried?</Select.Label>
@@ -493,12 +495,12 @@ export function DirectorySubmissionForm({
               <Text fontWeight={"bold"} color="gray.500">
                 Section 5: Fees / Payment
               </Text>
-              <Field.Root id="type" required>
+              <Field.Root id="paymentType" required>
                 <Select.Root
                   multiple
                   collection={paymentType}
                   size="sm"
-                  name="type"
+                  name="paymentType"
                 >
                   <Select.HiddenSelect />
                   <Select.Label>Is Burial Free or Paid?</Select.Label>
@@ -537,12 +539,12 @@ export function DirectorySubmissionForm({
                   resize="vertical"
                 />
               </Field.Root>
-              <Field.Root id="type" required>
+              <Field.Root id="paymentMethod" required>
                 <Select.Root
                   multiple
                   collection={paymentMethod}
                   size="sm"
-                  name="type"
+                  name="paymentMethod"
                 >
                   <Select.HiddenSelect />
                   <Select.Label>Payment Method Accepted</Select.Label>
@@ -571,12 +573,12 @@ export function DirectorySubmissionForm({
               <Text fontWeight={"bold"} color="gray.500">
                 Section 6: Services & Facilities
               </Text>
-              <Field.Root id="type" required>
+              <Field.Root id="typavailableServicese" required>
                 <Select.Root
                   multiple
                   collection={availableServices}
                   size="sm"
-                  name="type"
+                  name="availableServices"
                 >
                   <Select.HiddenSelect />
                   <Select.Label>Available Services</Select.Label>
@@ -602,12 +604,12 @@ export function DirectorySubmissionForm({
                   </Portal>
                 </Select.Root>
               </Field.Root>
-              <Field.Root id="type" required>
+              <Field.Root id="facilitiesAvailable" required>
                 <Select.Root
                   multiple
                   collection={facilitiesAvailable}
                   size="sm"
-                  name="type"
+                  name="facilitiesAvailable"
                 >
                   <Select.HiddenSelect />
                   <Select.Label>Facilities Available</Select.Label>
@@ -688,7 +690,7 @@ export function DirectorySubmissionForm({
                 <Input
                   type="tel"
                   name="phoneNumber"
-                  value={formData.address}
+                  value={formData.phoneNumber}
                   onChange={handleChange}
                   placeholder="Enter your phone number"
                 />
