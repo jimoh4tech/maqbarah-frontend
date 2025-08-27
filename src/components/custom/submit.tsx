@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import React, { RefObject, useState } from "react";
 import { toaster } from "../ui/toaster";
+import { send } from "@emailjs/browser";
 
 export function DirectorySubmissionForm({
   submitRef,
@@ -138,8 +139,8 @@ export function DirectorySubmissionForm({
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID || "";
-    // const APIkey = import.meta.env.VITE_EMAILJS_API_KEY || "";
+    const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID || "";
+    const APIkey = import.meta.env.VITE_EMAILJS_API_KEY || "";
 
     // In a real application, you would send this formData to your backend API.
     // Example of how you might prepare data for submission (e.g., using FormData for files)
@@ -159,11 +160,8 @@ export function DirectorySubmissionForm({
     // Your backend will then handle sending the email to maqbarahdirectoryng@gmail.com
     try {
       // Example fetch call (replace with your actual backend endpoint)
-      // const response = await fetch('/api/submit-directory-entry', {
-      //   method: 'POST',
-      //   body: dataToSend, // Use dataToSend for FormData
-      // });
-      // await send(serviceID, "contact_me", dataToSend, APIkey);
+      const dataObject = Object.fromEntries(dataToSend.entries());
+      await send(serviceID, "contact_me", dataObject, APIkey);
       // if (response.ok) {
       toaster.create({
         title: "Submission Successful!",

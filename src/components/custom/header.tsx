@@ -11,6 +11,7 @@ import {
 import { FiMenu, FiX } from "react-icons/fi";
 import { RefObject, useState } from "react";
 import { MdOutlineDehaze } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const Links = [
   "Home",
@@ -67,7 +68,7 @@ export const Header = ({
       onOpen();
     }
   };
-
+  const navigate = useNavigate();
   return (
     <Box
       bg={"white"}
@@ -80,7 +81,7 @@ export const Header = ({
     >
       <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
         {/* Logo Section */}
-        <HStack gap={4} w={'150px'}>
+        <HStack gap={4} w={"150px"} onClick={() => navigate("/")} cursor={'pointer'}>
           <Image src="/images/logo_dark.png" alt="Maqbarah Directory" />
         </HStack>
 

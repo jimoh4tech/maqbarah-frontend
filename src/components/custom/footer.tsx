@@ -1,5 +1,15 @@
-import { Box, Flex, Stack, Text, Link, Image, HStack } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Stack,
+  Text,
+  Link,
+  Image,
+  HStack,
+  IconButton,
+} from "@chakra-ui/react";
 import { RefObject } from "react";
+import { FaArrowUpLong } from "react-icons/fa6";
 
 export const Footer = ({
   refs,
@@ -93,14 +103,30 @@ export const Footer = ({
           <Link href="#" color={"white"}>
             Islamic Guidelines
           </Link>
-          <Link href="#" color={"white"}>
+          <Link href="/privacy-policy" color={"white"}>
             Privacy Policy
           </Link>
         </Stack>
       </Flex>
-      <Text fontSize="sm" color="green.100" textAlign={"center"} mt={16} pb={2}>
-        &copy; Maqbarah Directory, {` ${new Date().getFullYear()}`}
-      </Text>
+      <Flex alignItems={'baseline'} justifyContent={'space-between'}>
+        <Text
+          fontSize="sm"
+          color="green.100"
+          textAlign={"center"}
+          mt={16}
+          pb={2}
+        >
+          &copy; Maqbarah Directory, {` ${new Date().getFullYear()}`}.
+        </Text>
+        <IconButton
+          bgColor={"white"}
+          onClick={() =>
+            refs[0].current?.scrollIntoView({ behavior: "smooth" })
+          }
+        >
+          <FaArrowUpLong color="green" />
+        </IconButton>
+      </Flex>
     </Box>
   );
 };

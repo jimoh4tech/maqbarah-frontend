@@ -159,74 +159,39 @@ export function ContactUsSection({
               w={"350px"}
               h={"150px"}
             >
-              <Icon as={FaWhatsapp} w={6} h={6} color="forest.500" />
-              <VStack align="flex-start" gap="0">
+              <VStack align="flex-start" gap="0" w={'full'}>
                 <Text fontWeight="semibold" fontSize="lg">
-                  WhatsApp
+                  Social Media Platforms
                 </Text>
-                <Link
-                  href="https://wa.me/2348026992605"
-                  fontSize="md"
-                  color="forest.600"
-                  _hover={{ textDecoration: "underline" }}
-                  target="_blank"
-                >
-                  Chat on WhatsApp
-                </Link>
-              </VStack>
-            </HStack>
-            {/* Telegram */}
-            <HStack
-              gap="4"
-              align="flex-start"
-              p="3"
-              bg="gray.50"
-              borderRadius="md"
-              shadow="sm"
-              w={"350px"}
-              h={"150px"}
-            >
-              <Icon as={FaTelegram} w={6} h={6} color="forest.500" />
-              <VStack align="flex-start" gap="0">
-                <Text fontWeight="semibold" fontSize="lg">
-                  Telegram
-                </Text>
-                <Link
-                  href="https://t.me/maqbarahdirectory"
-                  fontSize="md"
-                  color="forest.600"
-                  _hover={{ textDecoration: "underline" }}
-                  target="_blank"
-                >
-                  Join Telegram Group
-                </Link>
-              </VStack>
-            </HStack>
-            {/* Facebook */}
-            <HStack
-              gap="4"
-              align="flex-start"
-              p="3"
-              bg="gray.50"
-              borderRadius="md"
-              shadow="sm"
-              w={"350px"}
-              h={"150px"}
-            >
-              <Icon as={FaFacebook} w={6} h={6} color="forest.500" />
-              <VStack align="flex-start" gap="0">
-                <Text fontWeight="semibold" fontSize="lg">
-                  Facebook
-                </Text>
-                <Link
-                  href="https://www.facebook.com/profile.php?id=61575141770717&mibextid=ZbWKwL"
-                  fontSize="md"
-                  color="forest.600"
-                  _hover={{ textDecoration: "underline" }}
-                  target="_blank"
-                >
-                  Visit Our Facebook Page
-                </Link>
+                <Flex mt={5} gap={7} w={'full'}>
+                  <Link
+                    href="https://wa.me/2348026992605"
+                    fontSize="md"
+                    color="forest.600"
+                    _hover={{ textDecoration: "underline" }}
+                    target="_blank"
+                  >
+                    <Icon as={FaWhatsapp} w={6} h={6} color="forest.500" />
+                  </Link>
+                  <Link
+                    href="https://t.me/maqbarahdirectory"
+                    fontSize="md"
+                    color="forest.600"
+                    _hover={{ textDecoration: "underline" }}
+                    target="_blank"
+                  >
+                    <Icon as={FaTelegram} w={6} h={6} color="blue.500" />
+                  </Link>
+                  <Link
+                    href="https://www.facebook.com/profile.php?id=61575141770717&mibextid=ZbWKwL"
+                    fontSize="md"
+                    color="forest.600"
+                    _hover={{ textDecoration: "underline" }}
+                    target="_blank"
+                  >
+                    <Icon as={FaFacebook} w={6} h={6} color="blue.700" />
+                  </Link>
+                </Flex>
               </VStack>
             </HStack>
           </Flex>

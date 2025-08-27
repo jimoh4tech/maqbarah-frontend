@@ -5,13 +5,11 @@ import { createRoot } from "react-dom/client";
 import { Analytics } from "@vercel/analytics/react";
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
-import { Toaster } from "./components/ui/toaster.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider>
       <BrowserRouter>
-        <Toaster />
         <App />
         <Analytics />
       </BrowserRouter>
