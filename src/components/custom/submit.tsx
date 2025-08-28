@@ -12,10 +12,14 @@ import {
   createListCollection,
   Select,
   Portal,
+  FileUpload,
+  Icon,
 } from "@chakra-ui/react";
-import React, { RefObject, useState } from "react";
+import { RefObject } from "react";
 import { toaster } from "../ui/toaster";
 import { send } from "@emailjs/browser";
+import { useFormik } from "formik";
+import { LuUpload } from "react-icons/lu";
 
 export function DirectorySubmissionForm({
   submitRef,
@@ -23,34 +27,148 @@ export function DirectorySubmissionForm({
   submitRef: RefObject<HTMLDivElement | null>;
 }) {
   // State to hold form data
-  const [formData, setFormData] = useState({
-    name: "",
-    address: "",
-    city: "",
-    lga: "",
-    state: "",
-    landmark: "",
-    contactPersonName: "",
-    contactPersonRole: "",
-    contactPersonPhone: "",
-    alternativePhone: "",
-    picture: null as File | null, // To store the selected file
-    additionalNotes: "",
-    paymentDescription: "",
-    type: "",
-    managingBody: "",
-    openingHours: "",
-    emergencyAccessAvailable: false,
-    deceasedGroup: [""],
-    typeOfOwnership: [""],
-    paymentType: [""],
-    paymentDetails: "",
-    paymentMethod: [""],
-    availableServices: [""],
-    facilitiesAvailable: [""],
-    fullName: "",
-    email: "",
-    phoneNumber: "",
+  // const [formData, setFormData] = useState({
+  //   name: "",
+  //   address: "",
+  //   city: "",
+  //   lga: "",
+  //   state: "",
+  //   landmark: "",
+  //   contactPersonName: "",
+  //   contactPersonRole: "",
+  //   contactPersonPhone: "",
+  //   alternativePhone: "",
+  //   picture: null as File | null, // To store the selected file
+  //   additionalNotes: "",
+  //   paymentDescription: "",
+  //   type: "",
+  //   managingBody: "",
+  //   openingHours: "",
+  //   emergencyAccessAvailable: false,
+  //   deceasedGroup: [""],
+  //   typeOfOwnership: [""],
+  //   paymentType: [""],
+  //   paymentDetails: "",
+  //   paymentMethod: [""],
+  //   availableServices: [""],
+  //   facilitiesAvailable: [""],
+  //   fullName: "",
+  //   email: "",
+  //   phoneNumber: "",
+  // });
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      address: "",
+      city: "",
+      lga: "",
+      state: "",
+      landmark: "",
+      contactPersonName: "",
+      contactPersonRole: "",
+      contactPersonPhone: "",
+      alternativePhone: "",
+      images: null, // To store the selected file
+      additionalNotes: "",
+      paymentDescription: "",
+      type: "",
+      managingBody: "",
+      openingHours: "",
+      emergencyAccessAvailable: [""],
+      deceasedGroup: [""],
+      typeOfOwnership: [""],
+      paymentType: [""],
+      paymentDetails: "",
+      paymentMethod: [""],
+      availableServices: [""],
+      facilitiesAvailable: [""],
+      fullName: "",
+      email: "",
+      phoneNumber: "",
+    },
+    async onSubmit(values) {
+      console.log(values);
+      const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID || "";
+      const APIkey = import.meta.env.VITE_EMAILJS_API_KEY || "";
+
+      // In a real application, you would send this formData to your backend API.
+      // Example of how you might prepare data for submission (e.g., using FormData for files)
+      // const dataToSend = new FormData();
+      // for (const key in formData) {
+      //   if (key === "picture" && formData[key]) {
+      //     dataToSend.append(key, formData[key] as File);
+      //   } else if (key !== "picture") {
+      //     dataToSend.append(key, (formData as any)[key]);
+      //   }
+      // }
+
+      // console.log("Form Data to be sent:", values); // Log for debugging
+
+      // --- IMPORTANT: Backend Integration Placeholder ---
+      // Replace this with your actual API call to your backend server.
+      // Your backend will then handle sending the email to maqbarahdirectoryng@gmail.com
+      try {
+        await send(serviceID, "contact_me", values, APIkey);
+        // if (response.ok) {
+        toaster.create({
+          title: "Submission Successful!",
+          description:
+            "Your details have been received. We will get back to you soon.",
+          type: "success",
+          duration: 5000,
+        });
+        // Reset form after successful submission
+        formik.setValues({
+          name: "",
+          address: "",
+          city: "",
+          lga: "",
+          state: "",
+          landmark: "",
+          contactPersonName: "",
+          contactPersonPhone: "",
+          images: null,
+          additionalNotes: "",
+          paymentDescription: "",
+          alternativePhone: "",
+          type: "",
+          managingBody: "",
+          openingHours: "",
+          availableServices: [""],
+          facilitiesAvailable: [""],
+          emergencyAccessAvailable: [""],
+          deceasedGroup: [""],
+          typeOfOwnership: [""],
+          paymentType: [""],
+          paymentDetails: "",
+          paymentMethod: [""],
+          contactPersonRole: "",
+          fullName: "",
+          email: "",
+          phoneNumber: "",
+        });
+        // Clear file input manually if needed (for uncontrolled inputs)
+        const fileInput = document.getElementById(
+          "picture"
+        ) as HTMLInputElement;
+        if (fileInput) fileInput.value = "";
+        // } else {
+        //   const errorData = await response.json();
+        //   throw new Error(errorData.message || 'Failed to submit form.');
+        // }
+      } catch (error: any) {
+        console.error("Submission error:", error);
+        toaster.create({
+          title: "Submission Failed.",
+          description:
+            error.message ||
+            "There was an error submitting your details. Please try again.",
+          type: "error",
+          duration: 5000,
+        });
+      }
+    },
   });
   const typeOfOwnership = createListCollection({
     items: [
@@ -111,114 +229,105 @@ export function DirectorySubmissionForm({
     ],
   });
   // Handle input changes
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
 
   // Handle file input change
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFormData((prevData) => ({
-        ...prevData,
-        picture: e.target.files![0], // Store the File object
-      }));
-    } else {
-      setFormData((prevData) => ({
-        ...prevData,
-        picture: null,
-      }));
-    }
-  };
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files[0]) {
+  //     setFormData((prevData) => ({
+  //       ...prevData,
+  //       picture: e.target.files![0], // Store the File object
+  //     }));
+  //   } else {
+  //     setFormData((prevData) => ({
+  //       ...prevData,
+  //       picture: null,
+  //     }));
+  //   }
+  // };
 
   // Handle form submission
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID || "";
-    const APIkey = import.meta.env.VITE_EMAILJS_API_KEY || "";
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID || "";
+  //   const APIkey = import.meta.env.VITE_EMAILJS_API_KEY || "";
 
-    // In a real application, you would send this formData to your backend API.
-    // Example of how you might prepare data for submission (e.g., using FormData for files)
-    const dataToSend = new FormData();
-    for (const key in formData) {
-      if (key === "picture" && formData[key]) {
-        dataToSend.append(key, formData[key] as File);
-      } else if (key !== "picture") {
-        dataToSend.append(key, (formData as any)[key]);
-      }
-    }
+  //   // In a real application, you would send this formData to your backend API.
+  //   // Example of how you might prepare data for submission (e.g., using FormData for files)
+  //   const dataToSend = new FormData();
+  //   for (const key in formData) {
+  //     if (key === "picture" && formData[key]) {
+  //       dataToSend.append(key, formData[key] as File);
+  //     } else if (key !== "picture") {
+  //       dataToSend.append(key, (formData as any)[key]);
+  //     }
+  //   }
 
-    console.log("Form Data to be sent:", formData); // Log for debugging
+  //   console.log("Form Data to be sent:", formData); // Log for debugging
 
-    // --- IMPORTANT: Backend Integration Placeholder ---
-    // Replace this with your actual API call to your backend server.
-    // Your backend will then handle sending the email to maqbarahdirectoryng@gmail.com
-    try {
-      // Example fetch call (replace with your actual backend endpoint)
-      const dataObject = Object.fromEntries(dataToSend.entries());
-      await send(serviceID, "contact_me", dataObject, APIkey);
-      // if (response.ok) {
-      toaster.create({
-        title: "Submission Successful!",
-        description:
-          "Your details have been received. We will get back to you soon.",
-        type: "success",
-        duration: 5000,
-      });
-      // Reset form after successful submission
-      setFormData({
-        name: "",
-        address: "",
-        city: "",
-        lga: "",
-        state: "",
-        landmark: "",
-        contactPersonName: "",
-        contactPersonPhone: "",
-        picture: null,
-        additionalNotes: "",
-        paymentDescription: "",
-        alternativePhone: "",
-        type: "",
-        managingBody: "",
-        openingHours: "",
-        availableServices: [""],
-        facilitiesAvailable: [""],
-        emergencyAccessAvailable: false,
-        deceasedGroup: [""],
-        typeOfOwnership: [""],
-        paymentType: [""],
-        paymentDetails: "",
-        paymentMethod: [""],
-        contactPersonRole: "",
-        fullName: "",
-        email: "",
-        phoneNumber: "",
-      });
-      // Clear file input manually if needed (for uncontrolled inputs)
-      const fileInput = document.getElementById("picture") as HTMLInputElement;
-      if (fileInput) fileInput.value = "";
-      // } else {
-      //   const errorData = await response.json();
-      //   throw new Error(errorData.message || 'Failed to submit form.');
-      // }
-    } catch (error: any) {
-      console.error("Submission error:", error);
-      toaster.create({
-        title: "Submission Failed.",
-        description:
-          error.message ||
-          "There was an error submitting your details. Please try again.",
-        type: "error",
-        duration: 5000,
-      });
-    }
-  };
+  //   // --- IMPORTANT: Backend Integration Placeholder ---
+  //   // Replace this with your actual API call to your backend server.
+  //   // Your backend will then handle sending the email to maqbarahdirectoryng@gmail.com
+  //   try {
+  //     // Example fetch call (replace with your actual backend endpoint)
+  //     const dataObject = Object.fromEntries(dataToSend.entries());
+  //     await send(serviceID, "contact_me", dataObject, APIkey);
+  //     // if (response.ok) {
+  //     toaster.create({
+  //       title: "Submission Successful!",
+  //       description:
+  //         "Your details have been received. We will get back to you soon.",
+  //       type: "success",
+  //       duration: 5000,
+  //     });
+  //     // Reset form after successful submission
+  //     setFormData({
+  //       name: "",
+  //       address: "",
+  //       city: "",
+  //       lga: "",
+  //       state: "",
+  //       landmark: "",
+  //       contactPersonName: "",
+  //       contactPersonPhone: "",
+  //       picture: null,
+  //       additionalNotes: "",
+  //       paymentDescription: "",
+  //       alternativePhone: "",
+  //       type: "",
+  //       managingBody: "",
+  //       openingHours: "",
+  //       availableServices: [""],
+  //       facilitiesAvailable: [""],
+  //       emergencyAccessAvailable: false,
+  //       deceasedGroup: [""],
+  //       typeOfOwnership: [""],
+  //       paymentType: [""],
+  //       paymentDetails: "",
+  //       paymentMethod: [""],
+  //       contactPersonRole: "",
+  //       fullName: "",
+  //       email: "",
+  //       phoneNumber: "",
+  //     });
+  //     // Clear file input manually if needed (for uncontrolled inputs)
+  //     const fileInput = document.getElementById("picture") as HTMLInputElement;
+  //     if (fileInput) fileInput.value = "";
+  //     // } else {
+  //     //   const errorData = await response.json();
+  //     //   throw new Error(errorData.message || 'Failed to submit form.');
+  //     // }
+  //   } catch (error: any) {
+  //     console.error("Submission error:", error);
+  //     toaster.create({
+  //       title: "Submission Failed.",
+  //       description:
+  //         error.message ||
+  //         "There was an error submitting your details. Please try again.",
+  //       type: "error",
+  //       duration: 5000,
+  //     });
+  //   }
+  // };
 
   return (
     <Box
@@ -250,471 +359,509 @@ export function DirectorySubmissionForm({
           </Text>
 
           <Box
-            as="form"
-            onSubmit={handleSubmit}
             bg="white"
             p={{ base: "6", md: "8", lg: "10" }}
             borderRadius="xl"
             shadow="xl"
           >
-            <VStack gap="5">
-              <Text fontWeight={"bold"} color="gray.500">
-                Section 1: Basic Information
-              </Text>
-              {/* Name */}
-              <Field.Root id="name" required>
-                <Field.Label>Name</Field.Label>
-                <Input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Enter maqbarah name"
-                />
-              </Field.Root>
-
-              {/* Address */}
-              <Field.Root id="address" required>
-                <Field.Label>Address</Field.Label>
-                <Input
-                  type="address"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  placeholder="Enter street address and area"
-                />
-              </Field.Root>
-
-              <SimpleGrid columns={{ base: 1, md: 3 }} gap="4" width="full">
-                {/* City */}
-
-                <Field.Root id="city" required>
-                  <Field.Label>City</Field.Label>
+            <form onSubmit={formik.handleSubmit}>
+              <VStack gap="5">
+                <Text fontWeight={"bold"} color="gray.500">
+                  Section 1: Basic Information
+                </Text>
+                {/* Name */}
+                <Field.Root id="name" required>
+                  <Field.Label>Name</Field.Label>
                   <Input
                     type="text"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleChange}
-                    placeholder="Enter city or town"
+                    name="name"
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    placeholder="Enter maqbarah name"
                   />
                 </Field.Root>
 
-                {/* LGA */}
-                <Field.Root id="lga" required>
-                  <Field.Label>LGA</Field.Label>
+                {/* Address */}
+                <Field.Root id="address" required>
+                  <Field.Label>Address</Field.Label>
                   <Input
-                    type="text"
-                    name="lga"
-                    value={formData.lga}
-                    onChange={handleChange}
-                    placeholder="Local Government Area"
+                    type="address"
+                    name="address"
+                    value={formik.values.address}
+                    onChange={formik.handleChange}
+                    placeholder="Enter street address and area"
                   />
                 </Field.Root>
 
-                {/* State */}
-                <Field.Root id="state" required>
-                  <Field.Label>State</Field.Label>
+                <SimpleGrid columns={{ base: 1, md: 3 }} gap="4" width="full">
+                  {/* City */}
+
+                  <Field.Root id="city" required>
+                    <Field.Label>City</Field.Label>
+                    <Input
+                      type="text"
+                      name="city"
+                      value={formik.values.city}
+                      onChange={formik.handleChange}
+                      placeholder="Enter city or town"
+                    />
+                  </Field.Root>
+
+                  {/* LGA */}
+                  <Field.Root id="lga" required>
+                    <Field.Label>LGA</Field.Label>
+                    <Input
+                      type="text"
+                      name="lga"
+                      value={formik.values.lga}
+                      onChange={formik.handleChange}
+                      placeholder="Local Government Area"
+                    />
+                  </Field.Root>
+
+                  {/* State */}
+                  <Field.Root id="state" required>
+                    <Field.Label>State</Field.Label>
+                    <Input
+                      type="text"
+                      name="state"
+                      value={formik.values.state}
+                      onChange={formik.handleChange}
+                      placeholder="State"
+                    />
+                  </Field.Root>
+                </SimpleGrid>
+                {/* Address */}
+                <Field.Root id="landmark" required>
+                  <Field.Label>Nearby Landmark(s)</Field.Label>
                   <Input
-                    type="text"
-                    name="state"
-                    value={formData.state}
-                    onChange={handleChange}
-                    placeholder="State"
+                    type="landmark"
+                    name="landmark"
+                    value={formik.values.landmark}
+                    onChange={formik.handleChange}
+                    placeholder="Enter landmark"
                   />
                 </Field.Root>
-              </SimpleGrid>
-              {/* Address */}
-              <Field.Root id="landmark" required>
-                <Field.Label>Nearby Landmark(s)</Field.Label>
-                <Input
-                  type="landmark"
-                  name="landmark"
-                  value={formData.landmark}
-                  onChange={handleChange}
-                  placeholder="Enter landmark"
-                />
-              </Field.Root>
-              <Text fontWeight={"bold"} color="gray.500">
-                Section 2: Contact Information
-              </Text>
-              {/* Contact Person Name */}
-              <Field.Root id="contactPersonName" required>
-                <Field.Label>Contact Person Name</Field.Label>
-                <Input
-                  type="text"
-                  name="contactPersonName"
-                  value={formData.contactPersonName}
-                  onChange={handleChange}
-                  placeholder="Name of contact person"
-                />
-              </Field.Root>
-
-              {/* Contact Person Phone Number */}
-              <Field.Root id="contactPersonPhone" required>
-                <Field.Label>Contact Person Phone Number</Field.Label>
-                <Input
-                  type="text"
-                  name="contactPersonPhone"
-                  value={formData.contactPersonPhone}
-                  onChange={handleChange}
-                  placeholder="e.g., +2348012345678"
-                />
-              </Field.Root>
-              {/* Contact Person Phone Number */}
-              <Field.Root id="contactPersonRole" required>
-                <Field.Label>Contact Person Role</Field.Label>
-                <Input
-                  type="text"
-                  name="contactPersonRole"
-                  value={formData.contactPersonRole}
-                  onChange={handleChange}
-                  placeholder="Caretaker, Manager, etc."
-                />
-              </Field.Root>
-              <Text fontWeight={"bold"} color="gray.500">
-                Section 3: Management & Ownership
-              </Text>
-              <Field.Root id="typeOfOwnership" required>
-                <Select.Root
-                  multiple
-                  collection={typeOfOwnership}
-                  size="sm"
-                  name="typeOfOwnership"
-                >
-                  <Select.HiddenSelect />
-                  <Select.Label>Type of Ownership</Select.Label>
-                  <Select.Control>
-                    <Select.Trigger>
-                      <Select.ValueText placeholder="Select type" />
-                    </Select.Trigger>
-                    <Select.IndicatorGroup>
-                      <Select.Indicator />
-                    </Select.IndicatorGroup>
-                  </Select.Control>
-                  <Portal>
-                    <Select.Positioner>
-                      <Select.Content>
-                        {typeOfOwnership.items.map((framework) => (
-                          <Select.Item item={framework} key={framework.value}>
-                            {framework.label}
-                            <Select.ItemIndicator />
-                          </Select.Item>
-                        ))}
-                      </Select.Content>
-                    </Select.Positioner>
-                  </Portal>
-                </Select.Root>
-                <Field.Root id="managingBody" required>
-                  <Field.Label>Managing Body</Field.Label>
+                <Text fontWeight={"bold"} color="gray.500">
+                  Section 2: Contact Information
+                </Text>
+                {/* Contact Person Name */}
+                <Field.Root id="contactPersonName" required>
+                  <Field.Label>Contact Person Name</Field.Label>
                   <Input
                     type="text"
-                    name="managingBody"
-                    value={formData.managingBody}
-                    onChange={handleChange}
-                    placeholder="Enter name of managing body"
+                    name="contactPersonName"
+                    value={formik.values.contactPersonName}
+                    onChange={formik.handleChange}
+                    placeholder="Name of contact person"
                   />
                 </Field.Root>
-              </Field.Root>
 
-              <Text fontWeight={"bold"} color="gray.500">
-                Section 4: Burial Details
-              </Text>
-              <Field.Root id="openingHours" required>
-                <Field.Label>Opening & Closing Times</Field.Label>
-                <Input
-                  type="text"
-                  name="openingHours"
-                  value={formData.openingHours}
-                  onChange={handleChange}
-                  placeholder="7:00AM - 5:30PM"
-                />
-              </Field.Root>
-              <Field.Root id="type" required>
-                <Select.Root
-                  collection={emergencyAvailable}
-                  size="sm"
-                  name="type"
-                >
-                  <Select.HiddenSelect />
-                  <Select.Label>Emergency Available</Select.Label>
-                  <Select.Control>
-                    <Select.Trigger>
-                      <Select.ValueText placeholder="Select type" />
-                    </Select.Trigger>
-                    <Select.IndicatorGroup>
-                      <Select.Indicator />
-                    </Select.IndicatorGroup>
-                  </Select.Control>
-                  <Portal>
-                    <Select.Positioner>
-                      <Select.Content>
-                        {emergencyAvailable.items.map((framework) => (
-                          <Select.Item item={framework} key={framework.value}>
-                            {framework.label}
-                            <Select.ItemIndicator />
-                          </Select.Item>
-                        ))}
-                      </Select.Content>
-                    </Select.Positioner>
-                  </Portal>
-                </Select.Root>
-              </Field.Root>
-              <Field.Root id="deceasedGroup" required>
-                <Select.Root
-                  multiple
-                  collection={deceasedGroup}
-                  size="sm"
-                  name="deceasedGroup"
-                >
-                  <Select.HiddenSelect />
-                  <Select.Label>Who Can Be Burried?</Select.Label>
-                  <Select.Control>
-                    <Select.Trigger>
-                      <Select.ValueText placeholder="Select type" />
-                    </Select.Trigger>
-                    <Select.IndicatorGroup>
-                      <Select.Indicator />
-                    </Select.IndicatorGroup>
-                  </Select.Control>
-                  <Portal>
-                    <Select.Positioner>
-                      <Select.Content>
-                        {deceasedGroup.items.map((framework) => (
-                          <Select.Item item={framework} key={framework.value}>
-                            {framework.label}
-                            <Select.ItemIndicator />
-                          </Select.Item>
-                        ))}
-                      </Select.Content>
-                    </Select.Positioner>
-                  </Portal>
-                </Select.Root>
-              </Field.Root>
-              <Text fontWeight={"bold"} color="gray.500">
-                Section 5: Fees / Payment
-              </Text>
-              <Field.Root id="paymentType" required>
-                <Select.Root
-                  multiple
-                  collection={paymentType}
-                  size="sm"
-                  name="paymentType"
-                >
-                  <Select.HiddenSelect />
-                  <Select.Label>Is Burial Free or Paid?</Select.Label>
-                  <Select.Control>
-                    <Select.Trigger>
-                      <Select.ValueText placeholder="Select type" />
-                    </Select.Trigger>
-                    <Select.IndicatorGroup>
-                      <Select.Indicator />
-                    </Select.IndicatorGroup>
-                  </Select.Control>
-                  <Portal>
-                    <Select.Positioner>
-                      <Select.Content>
-                        {paymentType.items.map((framework) => (
-                          <Select.Item item={framework} key={framework.value}>
-                            {framework.label}
-                            <Select.ItemIndicator />
-                          </Select.Item>
-                        ))}
-                      </Select.Content>
-                    </Select.Positioner>
-                  </Portal>
-                </Select.Root>
-              </Field.Root>
+                {/* Contact Person Phone Number */}
+                <Field.Root id="contactPersonPhone" required>
+                  <Field.Label>Contact Person Phone Number</Field.Label>
+                  <Input
+                    type="text"
+                    name="contactPersonPhone"
+                    value={formik.values.contactPersonPhone}
+                    onChange={formik.handleChange}
+                    placeholder="e.g., +2348012345678"
+                  />
+                </Field.Root>
+                {/* Contact Person Phone Number */}
+                <Field.Root id="contactPersonRole" required>
+                  <Field.Label>Contact Person Role</Field.Label>
+                  <Input
+                    type="text"
+                    name="contactPersonRole"
+                    value={formik.values.contactPersonRole}
+                    onChange={formik.handleChange}
+                    placeholder="Caretaker, Manager, etc."
+                  />
+                </Field.Root>
+                <Text fontWeight={"bold"} color="gray.500">
+                  Section 3: Management & Ownership
+                </Text>
+                <Field.Root id="typeOfOwnership" required>
+                  <Select.Root
+                    multiple
+                    collection={typeOfOwnership}
+                    size="sm"
+                    name="typeOfOwnership"
+                    value={formik.values.typeOfOwnership}
+                    onValueChange={(e: { value: any }) =>
+                      formik.setFieldValue("typeOfOwnership", e.value)
+                    }
+                  >
+                    <Select.HiddenSelect />
+                    <Select.Label>Type of Ownership</Select.Label>
+                    <Select.Control>
+                      <Select.Trigger>
+                        <Select.ValueText placeholder="Select type" />
+                      </Select.Trigger>
+                      <Select.IndicatorGroup>
+                        <Select.Indicator />
+                      </Select.IndicatorGroup>
+                    </Select.Control>
+                    <Portal>
+                      <Select.Positioner>
+                        <Select.Content>
+                          {typeOfOwnership.items.map((framework) => (
+                            <Select.Item item={framework} key={framework.value}>
+                              {framework.label}
+                              <Select.ItemIndicator />
+                            </Select.Item>
+                          ))}
+                        </Select.Content>
+                      </Select.Positioner>
+                    </Portal>
+                  </Select.Root>
+                  <Field.Root id="managingBody" required>
+                    <Field.Label>Managing Body</Field.Label>
+                    <Input
+                      type="text"
+                      name="managingBody"
+                      value={formik.values.managingBody}
+                      onChange={formik.handleChange}
+                      placeholder="Enter name of managing body"
+                    />
+                  </Field.Root>
+                </Field.Root>
 
-              <Field.Root id="paymentDescription">
-                <Field.Label>If Paid, State Charges</Field.Label>
-                <Textarea
-                  name="paymentDescription"
-                  value={formData.paymentDescription}
-                  onChange={handleChange}
-                  placeholder="Enter charges breakdown including grave digging, ghusl, etc."
-                  size="lg"
-                  rows={2}
-                  resize="vertical"
-                />
-              </Field.Root>
-              <Field.Root id="paymentMethod" required>
-                <Select.Root
-                  multiple
-                  collection={paymentMethod}
-                  size="sm"
-                  name="paymentMethod"
-                >
-                  <Select.HiddenSelect />
-                  <Select.Label>Payment Method Accepted</Select.Label>
-                  <Select.Control>
-                    <Select.Trigger>
-                      <Select.ValueText placeholder="Select type" />
-                    </Select.Trigger>
-                    <Select.IndicatorGroup>
-                      <Select.Indicator />
-                    </Select.IndicatorGroup>
-                  </Select.Control>
-                  <Portal>
-                    <Select.Positioner>
-                      <Select.Content>
-                        {paymentMethod.items.map((framework) => (
-                          <Select.Item item={framework} key={framework.value}>
-                            {framework.label}
-                            <Select.ItemIndicator />
-                          </Select.Item>
-                        ))}
-                      </Select.Content>
-                    </Select.Positioner>
-                  </Portal>
-                </Select.Root>
-              </Field.Root>
-              <Text fontWeight={"bold"} color="gray.500">
-                Section 6: Services & Facilities
-              </Text>
-              <Field.Root id="typavailableServicese" required>
-                <Select.Root
-                  multiple
-                  collection={availableServices}
-                  size="sm"
-                  name="availableServices"
-                >
-                  <Select.HiddenSelect />
-                  <Select.Label>Available Services</Select.Label>
-                  <Select.Control>
-                    <Select.Trigger>
-                      <Select.ValueText placeholder="Select type" />
-                    </Select.Trigger>
-                    <Select.IndicatorGroup>
-                      <Select.Indicator />
-                    </Select.IndicatorGroup>
-                  </Select.Control>
-                  <Portal>
-                    <Select.Positioner>
-                      <Select.Content>
-                        {availableServices.items.map((framework) => (
-                          <Select.Item item={framework} key={framework.value}>
-                            {framework.label}
-                            <Select.ItemIndicator />
-                          </Select.Item>
-                        ))}
-                      </Select.Content>
-                    </Select.Positioner>
-                  </Portal>
-                </Select.Root>
-              </Field.Root>
-              <Field.Root id="facilitiesAvailable" required>
-                <Select.Root
-                  multiple
-                  collection={facilitiesAvailable}
-                  size="sm"
-                  name="facilitiesAvailable"
-                >
-                  <Select.HiddenSelect />
-                  <Select.Label>Facilities Available</Select.Label>
-                  <Select.Control>
-                    <Select.Trigger>
-                      <Select.ValueText placeholder="Select type" />
-                    </Select.Trigger>
-                    <Select.IndicatorGroup>
-                      <Select.Indicator />
-                    </Select.IndicatorGroup>
-                  </Select.Control>
-                  <Portal>
-                    <Select.Positioner>
-                      <Select.Content>
-                        {facilitiesAvailable.items.map((framework) => (
-                          <Select.Item item={framework} key={framework.value}>
-                            {framework.label}
-                            <Select.ItemIndicator />
-                          </Select.Item>
-                        ))}
-                      </Select.Content>
-                    </Select.Positioner>
-                  </Portal>
-                </Select.Root>
-              </Field.Root>
-              <Text fontWeight={"bold"} color="gray.500">
-                Section 7: Visual & Final Notes
-              </Text>
-              {/* Picture Upload */}
-              <Field.Root id="picture">
-                <Field.Label>Upload Picture</Field.Label>
-                <Input
-                  type="file"
-                  name="picture"
-                  accept="image/*" // Accept only image files
-                  onChange={handleFileChange}
-                  p="2" // Add some padding for the file input
-                  height="auto" // Adjust height for file input
-                />
-                {formData.picture && (
-                  <Text mt="2" fontSize="sm" color="gray.600">
-                    Selected file: {formData.picture.name}
-                  </Text>
-                )}
-              </Field.Root>
+                <Text fontWeight={"bold"} color="gray.500">
+                  Section 4: Burial Details
+                </Text>
+                <Field.Root id="openingHours" required>
+                  <Field.Label>Opening & Closing Times</Field.Label>
+                  <Input
+                    type="text"
+                    name="openingHours"
+                    value={formik.values.openingHours}
+                    onChange={formik.handleChange}
+                    placeholder="7:00AM - 5:30PM"
+                  />
+                </Field.Root>
+                <Field.Root id="type" required>
+                  <Select.Root
+                    collection={emergencyAvailable}
+                    size="sm"
+                    name="emergencyAvailable"
+                    value={formik.values.emergencyAccessAvailable}
+                    onValueChange={(e: { value: any }) =>
+                      formik.setFieldValue("emergencyAvailable", e.value)
+                    }
+                  >
+                    <Select.HiddenSelect />
+                    <Select.Label>Emergency Available</Select.Label>
+                    <Select.Control>
+                      <Select.Trigger>
+                        <Select.ValueText placeholder="Select type" />
+                      </Select.Trigger>
+                      <Select.IndicatorGroup>
+                        <Select.Indicator />
+                      </Select.IndicatorGroup>
+                    </Select.Control>
+                    <Portal>
+                      <Select.Positioner>
+                        <Select.Content>
+                          {emergencyAvailable.items.map((framework) => (
+                            <Select.Item item={framework} key={framework.value}>
+                              {framework.label}
+                              <Select.ItemIndicator />
+                            </Select.Item>
+                          ))}
+                        </Select.Content>
+                      </Select.Positioner>
+                    </Portal>
+                  </Select.Root>
+                </Field.Root>
+                <Field.Root id="deceasedGroup" required>
+                  <Select.Root
+                    multiple
+                    collection={deceasedGroup}
+                    size="sm"
+                    name="deceasedGroup"
+                    value={formik.values.deceasedGroup}
+                    onValueChange={(e: { value: any }) =>
+                      formik.setFieldValue("deceasedGroup", e.value)
+                    }
+                  >
+                    <Select.HiddenSelect />
+                    <Select.Label>Who Can Be Burried?</Select.Label>
+                    <Select.Control>
+                      <Select.Trigger>
+                        <Select.ValueText placeholder="Select type" />
+                      </Select.Trigger>
+                      <Select.IndicatorGroup>
+                        <Select.Indicator />
+                      </Select.IndicatorGroup>
+                    </Select.Control>
+                    <Portal>
+                      <Select.Positioner>
+                        <Select.Content>
+                          {deceasedGroup.items.map((framework) => (
+                            <Select.Item item={framework} key={framework.value}>
+                              {framework.label}
+                              <Select.ItemIndicator />
+                            </Select.Item>
+                          ))}
+                        </Select.Content>
+                      </Select.Positioner>
+                    </Portal>
+                  </Select.Root>
+                </Field.Root>
+                <Text fontWeight={"bold"} color="gray.500">
+                  Section 5: Fees / Payment
+                </Text>
+                <Field.Root id="paymentType" required>
+                  <Select.Root
+                    multiple
+                    collection={paymentType}
+                    size="sm"
+                    name="paymentType"
+                    value={formik.values.paymentType}
+                    onValueChange={(e: { value: any }) =>
+                      formik.setFieldValue("paymentType", e.value)
+                    }
+                  >
+                    <Select.HiddenSelect />
+                    <Select.Label>Is Burial Free or Paid?</Select.Label>
+                    <Select.Control>
+                      <Select.Trigger>
+                        <Select.ValueText placeholder="Select type" />
+                      </Select.Trigger>
+                      <Select.IndicatorGroup>
+                        <Select.Indicator />
+                      </Select.IndicatorGroup>
+                    </Select.Control>
+                    <Portal>
+                      <Select.Positioner>
+                        <Select.Content>
+                          {paymentType.items.map((framework) => (
+                            <Select.Item item={framework} key={framework.value}>
+                              {framework.label}
+                              <Select.ItemIndicator />
+                            </Select.Item>
+                          ))}
+                        </Select.Content>
+                      </Select.Positioner>
+                    </Portal>
+                  </Select.Root>
+                </Field.Root>
 
-              {/* Additional Notes */}
-              <Field.Root id="additionalNotes">
-                <Field.Label>Additional Notes</Field.Label>
-                <Textarea
-                  name="additionalNotes"
-                  value={formData.additionalNotes}
-                  onChange={handleChange}
-                  placeholder="Any additional information or special requests..."
-                  size="lg"
-                  rows={4}
-                  resize="vertical"
-                />
-              </Field.Root>
-              <Text fontWeight={"bold"} color="gray.500">
-                Section 8: This form was filled by
-              </Text>
-              {/* Name */}
-              <Field.Root id="fullName" required>
-                <Field.Label>Full Name</Field.Label>
-                <Input
-                  type="text"
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  placeholder="Enter your fullname"
-                />
-              </Field.Root>
+                <Field.Root id="paymentDescription">
+                  <Field.Label>If Paid, State Charges</Field.Label>
+                  <Textarea
+                    name="paymentDescription"
+                    value={formik.values.paymentDescription}
+                    onChange={formik.handleChange}
+                    placeholder="Enter charges breakdown including grave digging, ghusl, etc."
+                    size="lg"
+                    rows={2}
+                    resize="vertical"
+                  />
+                </Field.Root>
+                <Field.Root id="paymentMethod" required>
+                  <Select.Root
+                    multiple
+                    collection={paymentMethod}
+                    size="sm"
+                    name="paymentMethod"
+                    value={formik.values.paymentMethod}
+                    onValueChange={(e: { value: any }) =>
+                      formik.setFieldValue("paymentMethod", e.value)
+                    }
+                  >
+                    <Select.HiddenSelect />
+                    <Select.Label>Payment Method Accepted</Select.Label>
+                    <Select.Control>
+                      <Select.Trigger>
+                        <Select.ValueText placeholder="Select type" />
+                      </Select.Trigger>
+                      <Select.IndicatorGroup>
+                        <Select.Indicator />
+                      </Select.IndicatorGroup>
+                    </Select.Control>
+                    <Portal>
+                      <Select.Positioner>
+                        <Select.Content>
+                          {paymentMethod.items.map((framework) => (
+                            <Select.Item item={framework} key={framework.value}>
+                              {framework.label}
+                              <Select.ItemIndicator />
+                            </Select.Item>
+                          ))}
+                        </Select.Content>
+                      </Select.Positioner>
+                    </Portal>
+                  </Select.Root>
+                </Field.Root>
+                <Text fontWeight={"bold"} color="gray.500">
+                  Section 6: Services & Facilities
+                </Text>
+                <Field.Root id="typavailableServicese" required>
+                  <Select.Root
+                    multiple
+                    collection={availableServices}
+                    size="sm"
+                    name="availableServices"
+                    value={formik.values.availableServices}
+                    onValueChange={(e: { value: any }) =>
+                      formik.setFieldValue("availableServices", e.value)
+                    }
+                  >
+                    <Select.HiddenSelect />
+                    <Select.Label>Available Services</Select.Label>
+                    <Select.Control>
+                      <Select.Trigger>
+                        <Select.ValueText placeholder="Select type" />
+                      </Select.Trigger>
+                      <Select.IndicatorGroup>
+                        <Select.Indicator />
+                      </Select.IndicatorGroup>
+                    </Select.Control>
+                    <Portal>
+                      <Select.Positioner>
+                        <Select.Content>
+                          {availableServices.items.map((framework) => (
+                            <Select.Item item={framework} key={framework.value}>
+                              {framework.label}
+                              <Select.ItemIndicator />
+                            </Select.Item>
+                          ))}
+                        </Select.Content>
+                      </Select.Positioner>
+                    </Portal>
+                  </Select.Root>
+                </Field.Root>
+                <Field.Root id="facilitiesAvailable" required>
+                  <Select.Root
+                    multiple
+                    collection={facilitiesAvailable}
+                    size="sm"
+                    name="facilitiesAvailable"
+                    value={formik.values.facilitiesAvailable}
+                    onValueChange={(e: { value: any }) =>
+                      formik.setFieldValue("facilitiesAvailable", e.value)
+                    }
+                  >
+                    <Select.HiddenSelect />
+                    <Select.Label>Facilities Available</Select.Label>
+                    <Select.Control>
+                      <Select.Trigger>
+                        <Select.ValueText placeholder="Select type" />
+                      </Select.Trigger>
+                      <Select.IndicatorGroup>
+                        <Select.Indicator />
+                      </Select.IndicatorGroup>
+                    </Select.Control>
+                    <Portal>
+                      <Select.Positioner>
+                        <Select.Content>
+                          {facilitiesAvailable.items.map((framework) => (
+                            <Select.Item item={framework} key={framework.value}>
+                              {framework.label}
+                              <Select.ItemIndicator />
+                            </Select.Item>
+                          ))}
+                        </Select.Content>
+                      </Select.Positioner>
+                    </Portal>
+                  </Select.Root>
+                </Field.Root>
+                <Text fontWeight={"bold"} color="gray.500">
+                  Section 7: Visual & Final Notes
+                </Text>
+                {/* Picture Upload */}
+                <Field.Root id="images">
+                  <Field.Label>Upload Picture</Field.Label>
+                  <FileUpload.Root
+                    maxW="full"
+                    alignItems="stretch"
+                    maxFiles={10}
+                    accept={[".png", ".jpg", ".jpeg", ".gif"]}
+                    maxFileSize={1024 * 1024 * 5}
+                    name="images"
+                    onFileChange={(e: { acceptedFiles: any[] }) =>
+                      formik.setFieldValue("images", e.acceptedFiles[0])
+                    }
+                  >
+                    <FileUpload.HiddenInput />
+                    <FileUpload.Dropzone>
+                      <Icon size="md" color="fg.muted">
+                        <LuUpload />
+                      </Icon>
+                      <FileUpload.DropzoneContent>
+                        <Box>Drag and drop files here</Box>
+                        <Box color="fg.muted">.png, .jpg up to 5MB</Box>
+                      </FileUpload.DropzoneContent>
+                    </FileUpload.Dropzone>
+                    <FileUpload.List />
+                  </FileUpload.Root>
+                </Field.Root>
 
-              {/* Phone */}
-              <Field.Root id="phoneNumber" required>
-                <Field.Label>Phone Number</Field.Label>
-                <Input
-                  type="tel"
-                  name="phoneNumber"
-                  value={formData.phoneNumber}
-                  onChange={handleChange}
-                  placeholder="Enter your phone number"
-                />
-              </Field.Root>
-              <Field.Root id="email" required>
-                <Field.Label>Email</Field.Label>
-                <Input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Enter your email address"
-                />
-              </Field.Root>
-              {/* Submit Button */}
-              <Button
-                type="submit"
-                colorPalette="forest"
-                transition="all 0.2s"
-                mt="6" // Margin top for separation
-                w={"full"}
-                color={"white"}
-              >
-                Submit Details
-              </Button>
-            </VStack>
+                {/* Additional Notes */}
+                <Field.Root id="additionalNotes">
+                  <Field.Label>Additional Notes</Field.Label>
+                  <Textarea
+                    name="additionalNotes"
+                    value={formik.values.additionalNotes}
+                    onChange={formik.handleChange}
+                    placeholder="Any additional information or special requests..."
+                    size="lg"
+                    rows={4}
+                    resize="vertical"
+                  />
+                </Field.Root>
+                <Text fontWeight={"bold"} color="gray.500">
+                  Section 8: This form was filled by
+                </Text>
+                {/* Name */}
+                <Field.Root id="fullName" required>
+                  <Field.Label>Full Name</Field.Label>
+                  <Input
+                    type="text"
+                    name="fullName"
+                    value={formik.values.fullName}
+                    onChange={formik.handleChange}
+                    placeholder="Enter your fullname"
+                  />
+                </Field.Root>
+
+                {/* Phone */}
+                <Field.Root id="phoneNumber" required>
+                  <Field.Label>Phone Number</Field.Label>
+                  <Input
+                    type="tel"
+                    name="phoneNumber"
+                    value={formik.values.phoneNumber}
+                    onChange={formik.handleChange}
+                    placeholder="Enter your phone number"
+                  />
+                </Field.Root>
+                <Field.Root id="email" required>
+                  <Field.Label>Email</Field.Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    placeholder="Enter your email address"
+                  />
+                </Field.Root>
+                {/* Submit Button */}
+                <Button
+                  type="submit"
+                  colorPalette="forest"
+                  transition="all 0.2s"
+                  mt="6" // Margin top for separation
+                  w={"full"}
+                  color={"white"}
+                >
+                  Submit Details
+                </Button>
+              </VStack>
+            </form>
           </Box>
         </VStack>
       </Container>

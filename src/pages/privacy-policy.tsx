@@ -185,7 +185,7 @@ export const PrivacyPolicy = () => {
               We may update this Privacy Policy. Any changes will be posted
               here.
             </Text>
-            <Text mb="2">📅 Last updated: April 4, 2025.</Text>
+            <Text mb="2">📅 Last updated: August 28, 2025.</Text>
             <Text>📩 Contact Us: privacy@maqbarahdirectory.com.ng</Text>
           </Box>
         </VStack>

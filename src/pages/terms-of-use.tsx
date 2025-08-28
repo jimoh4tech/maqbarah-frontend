@@ -184,7 +184,7 @@ export const TermsOfUse = () => {
               These Terms may be updated periodically. Continued use of the
               website after changes means you accept the new Terms.
             </Text>
-            <Text mb="2">📅 Last updated: April 4, 2025.</Text>
+            <Text mb="2">📅 Last updated: August 28, 2025.</Text>
             <Text>📩 Contact Us: privacy@maqbarahdirectory.com.ng</Text>
           </Box>
         </VStack>
