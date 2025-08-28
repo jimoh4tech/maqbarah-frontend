@@ -100,8 +100,8 @@ export const Footer = ({
           <Link href="#" color={"white"}>
             FAQs
           </Link>
-          <Link href="#" color={"white"}>
-            Islamic Guidelines
+          <Link href="/terms-of-use" color={"white"}>
+            Terms Of Use
           </Link>
           <Link href="/privacy-policy" color={"white"}>
             Privacy Policy

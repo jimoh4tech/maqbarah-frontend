@@ -33,9 +33,14 @@ const NavLink = ({
   handleToggle: () => void;
   isMobile?: boolean;
 }) => {
+  const navigate = useNavigate();
   const handleClick = () => {
-    ref.current?.scrollIntoView({ behavior: "smooth" });
-    if (isMobile) handleToggle();
+    navigate("/");
+
+    setTimeout(() => {
+      ref.current?.scrollIntoView({ behavior: "smooth" });
+      if (isMobile) handleToggle();
+    }, 500);
   };
   return (
     <Link
@@ -81,7 +86,12 @@ export const Header = ({
     >
       <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
         {/* Logo Section */}
-        <HStack gap={4} w={"150px"} onClick={() => navigate("/")} cursor={'pointer'}>
+        <HStack
+          gap={4}
+          w={"150px"}
+          onClick={() => navigate("/")}
+          cursor={"pointer"}
+        >
           <Image src="/images/logo_dark.png" alt="Maqbarah Directory" />
         </HStack>
 

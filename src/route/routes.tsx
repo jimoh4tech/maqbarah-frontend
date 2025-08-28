@@ -4,6 +4,7 @@ import { PrivacyPolicy } from "@/pages/privacy-policy";
 import { LandingPage } from "@/pages/landing";
 import NotFoundPage from "@/pages/not-found";
 import { Layout } from "@/layout/layout";
+import { TermsOfUse } from "@/pages/terms-of-use";
 
 export const Router = () => {
   const heroRef = useRef<HTMLDivElement | null>(null);
@@ -25,6 +26,7 @@ export const Router = () => {
       <Route path="/" element={<Layout refs={refs} />}>
         <Route index element={<LandingPage refs={refs} />} />
         <Route path="privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="terms-of-use" element={<TermsOfUse />} />
       </Route>
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
