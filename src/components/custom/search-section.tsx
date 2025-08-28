@@ -15,7 +15,7 @@ export const SearchSection = ({
       name: "IDIF Muslim Grave Yard",
       state: "Lagos",
       lga: "Ojo",
-      imageUrl: "/images/maq-1.png", // Example image URL
+      imageUrl: "/images/idif-4.jpg", // Example image URL
       address: "Agric Street, Off Aratumi Bus-Stop",
       city: "Iba Newsite",
       landmark: "Aratumi Bus-Stop & Abanishe Bus-Stop",
