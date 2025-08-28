@@ -1,0 +1,32 @@
+export interface IMaqbarahCardProps {
+  id: string;
+  name: string;
+  imageUrl: string;
+  verified?: boolean;
+  address: string;
+  city: string;
+  lga: string;
+  state: string;
+  landmark: string;
+  contactPersonName: string;
+  contactPersonPhone: string;
+  picture: null;
+  additionalNotes: string;
+  paymentDescription: string;
+  alternativePhone: string;
+  type: string;
+  managingBody: string;
+  openingHours: string;
+  availableServices: string[];
+  facilitiesAvailable: string[];
+  emergencyAccessAvailable: string;
+  deceasedGroup: string[];
+  typeOfOwnership: string[];
+  paymentType: string[];
+  paymentDetails: string;
+  paymentMethod: string[];
+  contactPersonRole: string;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+}

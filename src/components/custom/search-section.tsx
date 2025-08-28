@@ -1,6 +1,7 @@
 import { Box, Flex, For, Heading, Input, Text } from "@chakra-ui/react";
 import { MaqCard } from "./maq-card";
 import { RefObject, useState } from "react";
+import { IMaqbarahCardProps } from "@/interface/maqbarah";
 
 export const SearchSection = ({
   searchRef,
@@ -8,49 +9,80 @@ export const SearchSection = ({
   searchRef: RefObject<HTMLDivElement | null>;
 }) => {
   const [searchText, setSearchText] = useState("");
-  const maqbarahData = [
+  const maqbarahData: IMaqbarahCardProps[] = [
     {
-      id: 1,
-      name: "Maqbarah A",
-      state: "Oyo",
-      lga: "Ibadan",
-      imageUrl: "/images/maq-1.png", // Example image URL
-    },
-    {
-      id: 2,
-      name: "Maqbarah B",
-      state: "Kebbi",
-      lga: "Makera",
-      imageUrl: "/images/maq-2.png",
-    },
-    {
-      id: 3,
-      name: "Maqbarah C",
-      state: "Abuja",
-      lga: "Abuja Municipal",
-      imageUrl: "/images/maq-3.png",
-    },
-    {
-      id: 4,
-      name: "Maqbarah F",
+      id: "233",
+      name: "IDIF Muslim Grave Yard",
       state: "Lagos",
-      lga: "Ikeja",
+      lga: "Ojo",
       imageUrl: "/images/maq-1.png", // Example image URL
+      address: "Agric Street, Off Aratumi Bus-Stop",
+      city: "Iba Newsite",
+      landmark: "Aratumi Bus-Stop & Abanishe Bus-Stop",
+      contactPersonName: "Aboo Ibrahim",
+      contactPersonPhone: "+2347045989627",
+      contactPersonRole: "Coordinator",
+      typeOfOwnership: ["Society-Affliated"],
+      alternativePhone: "",
+      emergencyAccessAvailable: "Yes",
+      managingBody: "Islamic Development International Foundation",
+      openingHours: "8:00AM - 5:00PM",
+      deceasedGroup: ["Open to All Muslims Only"],
+      paymentType: ["Fixed Fee"],
+      paymentDetails: "N30,000 to N40,000 including grave digging",
+      paymentMethod: ["Cash","Bank Transfer"],
+      availableServices: ["Ghusl","Grave Digging", "Janazah Prayer Site"],
+      facilitiesAvailable: [
+        "Water Source",
+        "Ghusl (Washing) Room",
+        "Waiting Area for Family",
+        "Parking Space",
+        "Security",
+        "Accessible for Elderly",
+      ],
+      picture: null,
+      additionalNotes: "",
+      paymentDescription: "",
+      type: "",
+      fullName: "Aboo Yasir",
+      email: "maq",
+      phoneNumber: "+2348026992605",
     },
-    {
-      id: 5,
-      name: "Maqbarah H",
-      state: "Kano",
-      lga: "Kano Municipal",
-      imageUrl: "/images/maq-2.png",
-    },
-    {
-      id: 6,
-      name: "Maqbarah R",
-      state: "Kwara",
-      lga: "Ilorin",
-      imageUrl: "/images/maq-3.png",
-    },
+    // {
+    //   id: 2,
+    //   name: "Maqbarah B",
+    //   state: "Kebbi",
+    //   lga: "Makera",
+    //   imageUrl: "/images/maq-2.png",
+    // },
+    // {
+    //   id: 3,
+    //   name: "Maqbarah C",
+    //   state: "Abuja",
+    //   lga: "Abuja Municipal",
+    //   imageUrl: "/images/maq-3.png",
+    // },
+    // {
+    //   id: 4,
+    //   name: "Maqbarah F",
+    //   state: "Lagos",
+    //   lga: "Ikeja",
+    //   imageUrl: "/images/maq-1.png", // Example image URL
+    // },
+    // {
+    //   id: 5,
+    //   name: "Maqbarah H",
+    //   state: "Kano",
+    //   lga: "Kano Municipal",
+    //   imageUrl: "/images/maq-2.png",
+    // },
+    // {
+    //   id: 6,
+    //   name: "Maqbarah R",
+    //   state: "Kwara",
+    //   lga: "Ilorin",
+    //   imageUrl: "/images/maq-3.png",
+    // },
     // Add more maqbarah data as needed
   ];
   return (
@@ -92,17 +124,12 @@ export const SearchSection = ({
             each={maqbarahData.filter(
               (item) =>
                 item.name.toLowerCase().includes(searchText.toLowerCase()) ||
+                item.address.toLowerCase().includes(searchText.toLowerCase()) ||
                 item.lga.toLowerCase().includes(searchText.toLowerCase()) ||
                 item.state.toLowerCase().includes(searchText.toLowerCase())
             )}
           >
-            {(item) => (
-              <MaqCard
-                key={item.id}
-                {...item}
-                location={`${item.lga}, ${item.state}`}
-              />
-            )}
+            {(item) => <MaqCard key={item.id} details={item} />}
           </For>
         </Flex>
       </Flex>
