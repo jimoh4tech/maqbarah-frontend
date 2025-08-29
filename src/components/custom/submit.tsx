@@ -857,6 +857,7 @@ export function DirectorySubmissionForm({
                   mt="6" // Margin top for separation
                   w={"full"}
                   color={"white"}
+                  loading={formik.isSubmitting}
                 >
                   Submit Details
                 </Button>

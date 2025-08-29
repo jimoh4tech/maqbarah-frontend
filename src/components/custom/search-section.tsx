@@ -126,6 +126,7 @@ export const SearchSection = ({
                 item.name.toLowerCase().includes(searchText.toLowerCase()) ||
                 item.address.toLowerCase().includes(searchText.toLowerCase()) ||
                 item.lga.toLowerCase().includes(searchText.toLowerCase()) ||
+                item.city.toLowerCase().includes(searchText.toLowerCase()) ||
                 item.state.toLowerCase().includes(searchText.toLowerCase())
             )}
           >
