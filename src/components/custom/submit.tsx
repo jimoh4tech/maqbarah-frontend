@@ -12,51 +12,17 @@ import {
   createListCollection,
   Select,
   Portal,
-  FileUpload,
-  Icon,
 } from "@chakra-ui/react";
 import { RefObject } from "react";
 import { toaster } from "../ui/toaster";
 import { send } from "@emailjs/browser";
 import { useFormik } from "formik";
-import { LuUpload } from "react-icons/lu";
 
 export function DirectorySubmissionForm({
   submitRef,
 }: {
   submitRef: RefObject<HTMLDivElement | null>;
 }) {
-  // State to hold form data
-  // const [formData, setFormData] = useState({
-  //   name: "",
-  //   address: "",
-  //   city: "",
-  //   lga: "",
-  //   state: "",
-  //   landmark: "",
-  //   contactPersonName: "",
-  //   contactPersonRole: "",
-  //   contactPersonPhone: "",
-  //   alternativePhone: "",
-  //   picture: null as File | null, // To store the selected file
-  //   additionalNotes: "",
-  //   paymentDescription: "",
-  //   type: "",
-  //   managingBody: "",
-  //   openingHours: "",
-  //   emergencyAccessAvailable: false,
-  //   deceasedGroup: [""],
-  //   typeOfOwnership: [""],
-  //   paymentType: [""],
-  //   paymentDetails: "",
-  //   paymentMethod: [""],
-  //   availableServices: [""],
-  //   facilitiesAvailable: [""],
-  //   fullName: "",
-  //   email: "",
-  //   phoneNumber: "",
-  // });
-
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -92,29 +58,13 @@ export function DirectorySubmissionForm({
       const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID || "";
       const APIkey = import.meta.env.VITE_EMAILJS_API_KEY || "";
 
-      // In a real application, you would send this formData to your backend API.
-      // Example of how you might prepare data for submission (e.g., using FormData for files)
-      // const dataToSend = new FormData();
-      // for (const key in formData) {
-      //   if (key === "picture" && formData[key]) {
-      //     dataToSend.append(key, formData[key] as File);
-      //   } else if (key !== "picture") {
-      //     dataToSend.append(key, (formData as any)[key]);
-      //   }
-      // }
-
-      // console.log("Form Data to be sent:", values); // Log for debugging
-
-      // --- IMPORTANT: Backend Integration Placeholder ---
-      // Replace this with your actual API call to your backend server.
-      // Your backend will then handle sending the email to maqbarahdirectoryng@gmail.com
       try {
         await send(serviceID, "contact_me", values, APIkey);
         // if (response.ok) {
         toaster.create({
           title: "Submission Successful!",
           description:
-            "Your details have been received. We will get back to you soon.",
+            "Your details have been received. Kindly send the images to us maqbarahdirectoryng@gmail.com",
           type: "success",
           duration: 5000,
         });
@@ -153,10 +103,6 @@ export function DirectorySubmissionForm({
           "picture"
         ) as HTMLInputElement;
         if (fileInput) fileInput.value = "";
-        // } else {
-        //   const errorData = await response.json();
-        //   throw new Error(errorData.message || 'Failed to submit form.');
-        // }
       } catch (error: any) {
         console.error("Submission error:", error);
         toaster.create({
@@ -228,106 +174,6 @@ export function DirectorySubmissionForm({
       { label: "No", value: "No" },
     ],
   });
-  // Handle input changes
-
-  // Handle file input change
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files && e.target.files[0]) {
-  //     setFormData((prevData) => ({
-  //       ...prevData,
-  //       picture: e.target.files![0], // Store the File object
-  //     }));
-  //   } else {
-  //     setFormData((prevData) => ({
-  //       ...prevData,
-  //       picture: null,
-  //     }));
-  //   }
-  // };
-
-  // Handle form submission
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID || "";
-  //   const APIkey = import.meta.env.VITE_EMAILJS_API_KEY || "";
-
-  //   // In a real application, you would send this formData to your backend API.
-  //   // Example of how you might prepare data for submission (e.g., using FormData for files)
-  //   const dataToSend = new FormData();
-  //   for (const key in formData) {
-  //     if (key === "picture" && formData[key]) {
-  //       dataToSend.append(key, formData[key] as File);
-  //     } else if (key !== "picture") {
-  //       dataToSend.append(key, (formData as any)[key]);
-  //     }
-  //   }
-
-  //   console.log("Form Data to be sent:", formData); // Log for debugging
-
-  //   // --- IMPORTANT: Backend Integration Placeholder ---
-  //   // Replace this with your actual API call to your backend server.
-  //   // Your backend will then handle sending the email to maqbarahdirectoryng@gmail.com
-  //   try {
-  //     // Example fetch call (replace with your actual backend endpoint)
-  //     const dataObject = Object.fromEntries(dataToSend.entries());
-  //     await send(serviceID, "contact_me", dataObject, APIkey);
-  //     // if (response.ok) {
-  //     toaster.create({
-  //       title: "Submission Successful!",
-  //       description:
-  //         "Your details have been received. We will get back to you soon.",
-  //       type: "success",
-  //       duration: 5000,
-  //     });
-  //     // Reset form after successful submission
-  //     setFormData({
-  //       name: "",
-  //       address: "",
-  //       city: "",
-  //       lga: "",
-  //       state: "",
-  //       landmark: "",
-  //       contactPersonName: "",
-  //       contactPersonPhone: "",
-  //       picture: null,
-  //       additionalNotes: "",
-  //       paymentDescription: "",
-  //       alternativePhone: "",
-  //       type: "",
-  //       managingBody: "",
-  //       openingHours: "",
-  //       availableServices: [""],
-  //       facilitiesAvailable: [""],
-  //       emergencyAccessAvailable: false,
-  //       deceasedGroup: [""],
-  //       typeOfOwnership: [""],
-  //       paymentType: [""],
-  //       paymentDetails: "",
-  //       paymentMethod: [""],
-  //       contactPersonRole: "",
-  //       fullName: "",
-  //       email: "",
-  //       phoneNumber: "",
-  //     });
-  //     // Clear file input manually if needed (for uncontrolled inputs)
-  //     const fileInput = document.getElementById("picture") as HTMLInputElement;
-  //     if (fileInput) fileInput.value = "";
-  //     // } else {
-  //     //   const errorData = await response.json();
-  //     //   throw new Error(errorData.message || 'Failed to submit form.');
-  //     // }
-  //   } catch (error: any) {
-  //     console.error("Submission error:", error);
-  //     toaster.create({
-  //       title: "Submission Failed.",
-  //       description:
-  //         error.message ||
-  //         "There was an error submitting your details. Please try again.",
-  //       type: "error",
-  //       duration: 5000,
-  //     });
-  //   }
-  // };
 
   return (
     <Box
@@ -773,7 +619,7 @@ export function DirectorySubmissionForm({
                   Section 7: Visual & Final Notes
                 </Text>
                 {/* Picture Upload */}
-                <Field.Root id="images">
+                {/* <Field.Root id="images">
                   <Field.Label>Upload Picture</Field.Label>
                   <FileUpload.Root
                     maxW="full"
@@ -798,7 +644,7 @@ export function DirectorySubmissionForm({
                     </FileUpload.Dropzone>
                     <FileUpload.List />
                   </FileUpload.Root>
-                </Field.Root>
+                </Field.Root> */}
 
                 {/* Additional Notes */}
                 <Field.Root id="additionalNotes">
